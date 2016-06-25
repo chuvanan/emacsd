@@ -6,12 +6,12 @@
 
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
-;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
 (package-initialize)
-;; update the package metadata if the local cache is missing
 (unless package-archive-contents
   (package-refresh-contents))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (setq user-full-name "An Chu"
       user-mail-address "chuvanan.cva@gmail.com")
@@ -32,12 +32,15 @@
 
 ;; visual line
 (setq line-move-visual t)
+(setq scroll-margin 3)
+(fringe-mode 0)
+;; (fringe-mode '(8 . 0))
 
 ;; set fill column to 80 characters
 (setq-default fill-column 80)
 (setq-default default-tab-width 2)
 (setq tab-always-indent 'complete)
-;; (setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 ;; require a newline at the end of files
 (setq require-final-newline t)
@@ -81,23 +84,45 @@
 (set-keyboard-coding-system 'utf-8)
 
 ;; speed up echo commands
-(setq echo-keystrokes 0.3)
+(setq echo-keystrokes 0.1)
 
 ;; switch to other window
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "M-%") 'query-replace-regexp)
 
-;; set delete indentation
+;; set join line instead of fill paragraph
 (global-set-key (kbd "M-q") 'delete-indentation)
 
 ;; rebinding undo command
 (global-set-key (kbd "C-z") 'undo)
 
-;; highlight current line
-(global-hl-line-mode +1)
+;; store all backup and autosave files in the tmp dir
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+;; csv mode
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
+(autoload 'csv-mode "csv-mode"
+  "Major mode for editing comma-separated value files." t)
 
 ;; use-package
 (require 'use-package)
 (setq use-package-verbose t)
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode +1))
+
+(use-package smart-mode-line
+  :ensure t
+  :config (progn
+						(setq sml/no-confirm-load-theme t)
+						(sml/setup)))
 
 (use-package imenu-anywhere
 	:ensure t
@@ -105,7 +130,7 @@
 
 (use-package avy
   :ensure t
-  :bind (("M-s" . avy-goto-word-or-subword-1)))
+  :bind (("M-s M-s" . avy-goto-word-or-subword-1)))
 
 (use-package smex
   :ensure t
@@ -119,7 +144,7 @@
 (use-package undo-tree
   :ensure t
   :config
-  ;; autosave the undo-tree history
+
   (setq undo-tree-history-directory-alist
         `((".*" . ,temporary-file-directory)))
   (setq undo-tree-auto-save-history t))
@@ -128,8 +153,6 @@
   :config
   (setq recentf-max-saved-items 500
         recentf-max-menu-items 15
-        ;; disable recentf-cleanup on Emacs start, because it can cause
-        ;; problems with remote files
         recentf-auto-cleanup 'never)
 	(global-set-key "\C-x\ \C-r" 'recentf-open-files)
   (recentf-mode +1))
@@ -181,13 +204,6 @@
   (setq company-echo-delay 0)
   (setq company-begin-commands '(self-insert-command)))
 
-;; org-mode set up
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-;; expand region
 (use-package expand-region
   :commands er/expand-region
   :bind ("C-=" . er/expand-region))
@@ -254,7 +270,7 @@
  '(column-number-mode t)
  '(custom-safe-themes
 	 (quote
-		("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
+		("03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0ae52e74c576120c6863403922ee00340a3bf3051615674c4b937f9c99b24535" "aed73c6d0afcf2232bb25ed2d872c7a1c4f1bda6759f84afc24de6a1aec93da8" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "f245c9f24b609b00441a6a336bcc556fe38a6b24bfc0ca4aedd4fe23d858ba31" "1dfd7a150e80fdb4563f594716d09d849f4c50bcea12825bd8d284c05a87a3e1" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "4d80487632a0a5a72737a7fc690f1f30266668211b17ba836602a8da890c2118" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "3f5701c23d328be03536349b29cb24c5cfa79ea9ef9c46cf89668eda16b88a9c" "12b7ed9b0e990f6d41827c343467d2a6c464094cbcc6d0844df32837b50655f9" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(default-input-method "vietnamese-telex")
  '(ess-R-font-lock-keywords
 	 (quote
@@ -288,7 +304,7 @@
 		 (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
 	 (quote
-		(helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+		(avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -300,3 +316,24 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
+
+
+;; redefinde kill line and kill region
+(defadvice kill-ring-save (before slick-copy activate compile) "When called
+  interactively with no active region, copy a single line instead."
+  (interactive (if mark-active (list (region-beginning) (region-end)) (message
+  "Copied line") (list (line-beginning-position) (line-beginning-position
+  2)))))
+
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+    (if mark-active (list (region-beginning) (region-end))
+      (list (line-beginning-position)
+        (line-beginning-position 2)))))
+
+(defadvice ido-find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
