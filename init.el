@@ -33,8 +33,8 @@
 ;; visual line
 (setq line-move-visual t)
 (setq scroll-margin 3)
-(fringe-mode 0)
-;; (fringe-mode '(8 . 0))
+;; (fringe-mode 0)
+(fringe-mode '(8 . 0))
 
 ;; set fill column to 80 characters
 (setq-default fill-column 80)
@@ -53,6 +53,8 @@
 
 ;; disable startup screen
 (setq inhibit-startup-screen t)
+(setq initial-major-mode 'text-mode)
+(setq initial-scratch-message nil)
 
 ;; mode line settings
 (line-number-mode t)
@@ -113,10 +115,10 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-global-mode +1))
+;; (use-package projectile
+;;   :ensure t
+;;   :config
+;;   (projectile-global-mode +1))
 
 (use-package smart-mode-line
   :ensure t
@@ -144,7 +146,6 @@
 (use-package undo-tree
   :ensure t
   :config
-
   (setq undo-tree-history-directory-alist
         `((".*" . ,temporary-file-directory)))
   (setq undo-tree-auto-save-history t))
@@ -178,9 +179,9 @@
   :config
   (window-numbering-mode 1))
 
-(use-package easy-kill
-  :defer t
-  :init (global-set-key [remap kill-ring-save] 'easy-kill))
+;; (use-package easy-kill
+;;   :defer t
+;;   :init (global-set-key [remap kill-ring-save] 'easy-kill))
 
 (use-package zenburn-theme
   :ensure t
@@ -269,42 +270,42 @@
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(custom-safe-themes
-	 (quote
-		("03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0ae52e74c576120c6863403922ee00340a3bf3051615674c4b937f9c99b24535" "aed73c6d0afcf2232bb25ed2d872c7a1c4f1bda6759f84afc24de6a1aec93da8" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "f245c9f24b609b00441a6a336bcc556fe38a6b24bfc0ca4aedd4fe23d858ba31" "1dfd7a150e80fdb4563f594716d09d849f4c50bcea12825bd8d284c05a87a3e1" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "4d80487632a0a5a72737a7fc690f1f30266668211b17ba836602a8da890c2118" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "3f5701c23d328be03536349b29cb24c5cfa79ea9ef9c46cf89668eda16b88a9c" "12b7ed9b0e990f6d41827c343467d2a6c464094cbcc6d0844df32837b50655f9" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0ae52e74c576120c6863403922ee00340a3bf3051615674c4b937f9c99b24535" "aed73c6d0afcf2232bb25ed2d872c7a1c4f1bda6759f84afc24de6a1aec93da8" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "f245c9f24b609b00441a6a336bcc556fe38a6b24bfc0ca4aedd4fe23d858ba31" "1dfd7a150e80fdb4563f594716d09d849f4c50bcea12825bd8d284c05a87a3e1" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "4d80487632a0a5a72737a7fc690f1f30266668211b17ba836602a8da890c2118" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "3f5701c23d328be03536349b29cb24c5cfa79ea9ef9c46cf89668eda16b88a9c" "12b7ed9b0e990f6d41827c343467d2a6c464094cbcc6d0844df32837b50655f9" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(default-input-method "vietnamese-telex")
  '(ess-R-font-lock-keywords
-	 (quote
-		((ess-R-fl-keyword:modifiers . t)
-		 (ess-R-fl-keyword:fun-defs . t)
-		 (ess-R-fl-keyword:keywords . t)
-		 (ess-R-fl-keyword:assign-ops)
-		 (ess-R-fl-keyword:constants . t)
-		 (ess-fl-keyword:fun-calls)
-		 (ess-fl-keyword:numbers)
-		 (ess-fl-keyword:operators)
-		 (ess-fl-keyword:delimiters)
-		 (ess-fl-keyword:=)
-		 (ess-R-fl-keyword:F&T)
-		 (ess-R-fl-keyword:%op%))))
+   (quote
+    ((ess-R-fl-keyword:modifiers . t)
+     (ess-R-fl-keyword:fun-defs . t)
+     (ess-R-fl-keyword:keywords . t)
+     (ess-R-fl-keyword:assign-ops)
+     (ess-R-fl-keyword:constants . t)
+     (ess-fl-keyword:fun-calls)
+     (ess-fl-keyword:numbers)
+     (ess-fl-keyword:operators)
+     (ess-fl-keyword:delimiters)
+     (ess-fl-keyword:=)
+     (ess-R-fl-keyword:F&T)
+     (ess-R-fl-keyword:%op%))))
  '(inferior-R-font-lock-keywords
-	 (quote
-		((ess-S-fl-keyword:prompt . t)
-		 (ess-R-fl-keyword:messages . t)
-		 (ess-R-fl-keyword:modifiers . t)
-		 (ess-R-fl-keyword:fun-defs . t)
-		 (ess-R-fl-keyword:keywords . t)
-		 (ess-R-fl-keyword:assign-ops)
-		 (ess-R-fl-keyword:constants . t)
-		 (ess-fl-keyword:matrix-labels)
-		 (ess-fl-keyword:fun-calls)
-		 (ess-fl-keyword:numbers)
-		 (ess-fl-keyword:operators)
-		 (ess-fl-keyword:delimiters)
-		 (ess-fl-keyword:=)
-		 (ess-R-fl-keyword:F&T))))
+   (quote
+    ((ess-S-fl-keyword:prompt . t)
+     (ess-R-fl-keyword:messages . t)
+     (ess-R-fl-keyword:modifiers . t)
+     (ess-R-fl-keyword:fun-defs . t)
+     (ess-R-fl-keyword:keywords . t)
+     (ess-R-fl-keyword:assign-ops)
+     (ess-R-fl-keyword:constants . t)
+     (ess-fl-keyword:matrix-labels)
+     (ess-fl-keyword:fun-calls)
+     (ess-fl-keyword:numbers)
+     (ess-fl-keyword:operators)
+     (ess-fl-keyword:delimiters)
+     (ess-fl-keyword:=)
+     (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
-	 (quote
-		(avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+   (quote
+    (company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -337,3 +338,26 @@
   (unless (and buffer-file-name
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun ess-rmarkdown ()
+  "Compile R markdown (.Rmd). Should work for any output type."
+  (interactive)
+  ;; Check if attached R-session
+  (condition-case nil
+      (ess-get-process)
+    (error
+     (ess-switch-process)))
+  (let* ((rmd-buf (current-buffer)))
+    (save-excursion
+      (let* ((sprocess (ess-get-process ess-current-process-name))
+             (sbuffer (process-buffer sprocess))
+             (buf-coding (symbol-name buffer-file-coding-system))
+             (R-cmd
+              (format "library(rmarkdown); rmarkdown::render(\"%s\")"
+                      buffer-file-name)))
+        (message "Running rmarkdown on %s" buffer-file-name)
+        (ess-execute R-cmd 'buffer nil nil)
+        (switch-to-buffer rmd-buf)
+        (ess-show-buffer (buffer-name sbuffer) nil)))))
+
+(define-key polymode-mode-map "C-S-k" 'ess-rmarkdown)
