@@ -160,6 +160,7 @@
 
 (use-package dired
 	:config
+  (setq dired-listing-switches "-alh")
 	(require 'dired-x))
 
 (use-package ido
@@ -360,4 +361,4 @@
         (switch-to-buffer rmd-buf)
         (ess-show-buffer (buffer-name sbuffer) nil)))))
 
-(define-key polymode-mode-map "C-S-k" 'ess-rmarkdown)
+(define-key polymode-mode-map "\M-ns" 'ess-rmarkdown)
