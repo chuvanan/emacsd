@@ -45,6 +45,9 @@
 ;; require a newline at the end of files
 (setq require-final-newline t)
 
+;; insert new line if the point is at the end of the buffer
+(setq next-line-add-newlines t)
+
 ;; the blinking cursor is nothing, but an annoyance
 (blink-cursor-mode -1)
 
@@ -115,11 +118,6 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-;; (use-package projectile
-;;   :ensure t
-;;   :config
-;;   (projectile-global-mode +1))
-
 (use-package smart-mode-line
   :ensure t
   :config (progn
@@ -180,10 +178,6 @@
   :config
   (window-numbering-mode 1))
 
-;; (use-package easy-kill
-;;   :defer t
-;;   :init (global-set-key [remap kill-ring-save] 'easy-kill))
-
 (use-package zenburn-theme
   :ensure t
   :config
@@ -227,7 +221,7 @@
 (require 'poly-R)
 (require 'poly-markdown)
 
-;; MARKDOWN
+;; markdown
 (add-to-list 'auto-mode-alist '("\\.md$" . poly-markdown-mode))
 
 ;; R related modes
