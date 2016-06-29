@@ -30,6 +30,9 @@
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 
+;; disable menu bar
+(menu-bar-mode -1)
+
 ;; visual line
 (setq line-move-visual t)
 (setq scroll-margin 3)
