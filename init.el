@@ -29,6 +29,7 @@
 ;; disable tool-bar mode
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
+(global-hl-line-mode +1)
 
 ;; disable menu bar
 (menu-bar-mode -1)
@@ -100,6 +101,9 @@
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "M-%") 'query-replace-regexp)
 
+;; set ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 ;; set join line instead of fill paragraph
 (global-set-key (kbd "M-q") 'delete-indentation)
 
@@ -121,10 +125,11 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-(use-package visible-mark
+(use-package keyfreq
   :ensure t
   :config
-  (global-visible-mark-mode 1))
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
 
 (use-package smart-mode-line
   :ensure t
@@ -308,7 +313,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
