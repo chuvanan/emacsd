@@ -407,13 +407,6 @@
 
 (define-key polymode-mode-map "\M-nr" 'ess-rshiny)
 
-;; (defun push-mark-no-activate ()
-;;   "Pushes `point' to `mark-ring' and does not activate the region
-;;    Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
-;;   (interactive)
-;;   (push-mark (point) t nil)
-;;   (message "Pushed mark to ring"))
-
 (global-set-key (kbd "C-`") 'push-mark-no-activate)
 
 (defun jump-to-mark ()
