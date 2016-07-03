@@ -100,6 +100,8 @@
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "M-%") 'query-replace-regexp)
+(global-set-key (kbd "<f5>") 'calendar)
+(global-set-key (kbd "<f6>") 'calculator)
 
 ;; set ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
