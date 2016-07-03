@@ -125,6 +125,15 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
+;; markdown mode
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "markdown"))
+
 (use-package uniquify
   :config
   (setq uniquify-buffer-name-style 'forward)
