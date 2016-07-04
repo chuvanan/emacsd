@@ -138,7 +138,8 @@
   (setq beacon-push-mark 35)
   (setq beacon-color "#666600")
   (setq beacon-blink-duration 0.2)
-  (setq beacon-size 30))
+  (setq beacon-size 30)
+  (setq beacon-dont-blink-commands '(newline newline-and-indent)))
 
 (global-set-key (kbd "C-s") 'swiper)
 (setq ivy-display-style 'fancy)
