@@ -103,6 +103,9 @@
 (global-set-key (kbd "<f5>") 'calendar)
 (global-set-key (kbd "<f6>") 'calculator)
 
+;; enable narrowing
+(put 'narrow-to-region 'disabled nil)
+
 ;; set ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -127,13 +130,15 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-;; beacond
-;; (use-package beacon
-;;   :ensure t
-;;   :config
-;;   (beacon-mode 1)
-;;   (setq beacon-push-mark 35)
-;;   (setq beacon-color 0.3))
+;; beacon
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1)
+  (setq beacon-push-mark 35)
+  (setq beacon-color "#666600")
+  (setq beacon-blink-duration 0.2)
+  (setq beacon-size 30))
 
 (global-set-key (kbd "C-s") 'swiper)
 (setq ivy-display-style 'fancy)
@@ -463,3 +468,25 @@ Try the repeated popping up to 10 times."
             #'modi/multi-pop-to-mark)
 (setq set-mark-command-repeat-pop t)
 
+(defun sk/smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap move-beginning-of-line]
+                'sk/smarter-move-beginning-of-line)
