@@ -103,6 +103,25 @@
 (global-set-key (kbd "<f5>") 'calendar)
 (global-set-key (kbd "<f6>") 'calculator)
 
+;; hippie expand is dabbrev expand on steroids
+(setq hippie-expand-try-functions-list '(try-expand-dabbrev
+                                         try-expand-dabbrev-all-buffers
+                                         try-expand-dabbrev-from-kill
+                                         try-complete-file-name-partially
+                                         try-complete-file-name
+                                         try-expand-all-abbrevs
+                                         try-expand-list
+                                         try-expand-line
+                                         try-complete-lisp-symbol-partially
+                                         try-complete-lisp-symbol))
+
+;; use hippie-expand instead of dabbrev
+(global-set-key (kbd "M-/") #'hippie-expand)
+(global-set-key (kbd "s-/") #'hippie-expand)
+
+;; align code in a pretty way
+(global-set-key (kbd "C-x \\") #'align-regexp)
+
 ;; enable narrowing
 (put 'narrow-to-region 'disabled nil)
 
@@ -129,6 +148,15 @@
 ;; use-package
 (require 'use-package)
 (setq use-package-verbose t)
+
+;; Show number of matches while searching
+(use-package anzu
+  :ensure t
+  :config
+  (global-anzu-mode t)
+  (diminish 'anzu-mode)
+  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+  (global-set-key [remap query-replace] 'anzu-query-replace))
 
 ;; hungry delete
 (use-package hungry-delete
@@ -365,7 +393,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -488,3 +516,62 @@ point reaches the beginning or end of the buffer, stop there."
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line]
                 'sk/smarter-move-beginning-of-line)
+
+;; http://www.emacswiki.org/emacs/ZapToISearch
+(defun isearch-exit-other-end (rbeg rend)
+  "Exit isearch, but at the other end of the search string.
+This is useful when followed by an immediate kill."
+  (interactive "r")
+  (isearch-exit)
+  (goto-char isearch-other-end))
+
+(define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
+
+;; http://www.emacswiki.org/emacs/ZapToISearch
+(defun zap-to-isearch (rbeg rend)
+  "Kill the region between the mark and the closest portion of
+the isearch match string. The behaviour is meant to be analogous
+to zap-to-char; let's call it zap-to-isearch. The deleted region
+does not include the isearch word. This is meant to be bound only
+in isearch mode.  The point of this function is that oftentimes
+you want to delete some portion of text, one end of which happens
+to be an active isearch word. The observation to make is that if
+you use isearch a lot to move the cursor around (as you should,
+it is much more efficient than using the arrows), it happens a
+lot that you could just delete the active region between the mark
+and the point, not include the isearch word."
+  (interactive "r")
+  (when (not mark-active)
+    (error "Mark is not active"))
+  (let* ((isearch-bounds (list isearch-other-end (point)))
+         (ismin (apply 'min isearch-bounds))
+         (ismax (apply 'max isearch-bounds))
+         )
+    (if (< (mark) ismin)
+        (kill-region (mark) ismin)
+      (if (> (mark) ismax)
+          (kill-region ismax (mark))
+        (error "Internal error in isearch kill function.")))
+    (isearch-exit)
+    ))
+
+(define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
+
+;; Search back/forth for the symbol at point
+;; See http://www.emacswiki.org/emacs/SearchAtPoint
+(defun isearch-yank-symbol ()
+  "*Put symbol at current point into search string."
+  (interactive)
+  (let ((sym (symbol-at-point)))
+    (if sym
+        (progn
+          (setq isearch-regexp t
+                isearch-string (concat "\\_<" (regexp-quote (symbol-name sym)) "\\_>")
+                isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
+                isearch-yank-flag t))
+      (ding)))
+  (isearch-search-and-update))
+
+(define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
+
+
