@@ -102,6 +102,8 @@
 (global-set-key (kbd "M-%") 'query-replace-regexp)
 (global-set-key (kbd "<f5>") 'calendar)
 (global-set-key (kbd "<f6>") 'calculator)
+(global-set-key (kbd "M-]") 'forward-paragraph)
+(global-set-key (kbd "M-[") 'backward-paragraph)
 
 ;; hippie expand is dabbrev expand on steroids
 (setq hippie-expand-try-functions-list '(try-expand-dabbrev
