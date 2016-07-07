@@ -596,6 +596,7 @@ and the point, not include the isearch word."
 
 (require 'powerline)
 (powerline-default-theme)
+(setq powerline-arrow-shape 'arrow14)
 
 
 
