@@ -60,22 +60,19 @@
 
 ;; disable startup screen
 (setq inhibit-startup-screen t)
-(setq initial-major-mode 'text-mode)
+(setq initial-major-mode 'org-mode)
 (setq initial-scratch-message nil)
 
 ;; mode line settings
 (line-number-mode t)
 (column-number-mode t)
-(size-indication-mode t)
+;; (size-indication-mode t)
 
 ;; disable scroll-bar
 (scroll-bar-mode -1)
 
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; Newline at end of file
-(setq require-final-newline t)
 
 ;; delete the selection with a keypress
 (delete-selection-mode t)
@@ -96,7 +93,7 @@
 (setq echo-keystrokes 0.1)
 
 ;; switch to other window
-(global-set-key (kbd "M-o") 'other-window)
+;; (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "M-%") 'query-replace-regexp)
@@ -306,7 +303,7 @@
 
 (require 'ess-site)
 (require 'ess-rutils)
-(autoload 'r-mode "ess-site" "(Autoload)" t)
+;; (autoload 'r-mode "ess-site" "(Autoload)" t)
 ;; dont ask for new data directory
 (setq ess-ask-for-ess-directory nil)
 ;; don't print the evaluated commands
