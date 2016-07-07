@@ -149,6 +149,9 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
+(use-package rainbow-delimiters
+  :ensure t)
+
 ;; Show number of matches while searching
 (use-package anzu
   :ensure t
@@ -310,6 +313,14 @@
 ;; don't print the evaluated commands
 (setq ess-eval-visibly nil)
 
+;; "Highlights delimiters such as parentheses, brackets or braces according to their depth."
+(add-hook 'ess-mode-hook #'rainbow-delimiters-mode)
+
+;; Fancy up the prompt (see also ~/.Rprofile)
+;; http://www.wisdomandwonder.com/article/9687/i-wasted-time-with-a-custom-prompt-for-r-with-ess
+(setq inferior-ess-primary-prompt "ℝ> ")
+(setq inferior-S-prompt "[]a-zA-Z0-9.[]*\\(?:[>+.] \\)*ℝ+> ")
+
 (setq load-path (append '("/home/anchu/.emacs.d/polymode/" "/home/anchu/.emacs.d/polymode/modes") load-path))
 (require 'poly-R)
 (require 'poly-markdown)
@@ -393,7 +404,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
