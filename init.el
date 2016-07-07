@@ -27,8 +27,7 @@
 (setq gc-cons-threshold 50000000)
 
 ;; disable tool-bar mode
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
+(tool-bar-mode -1)
 (global-hl-line-mode +1)
 
 ;; disable menu bar
@@ -66,10 +65,16 @@
 ;; mode line settings
 (line-number-mode t)
 (column-number-mode t)
-;; (size-indication-mode t)
 
 ;; disable scroll-bar
 (scroll-bar-mode -1)
+
+;; fullscreen
+(when (fboundp 'toggle-frame-maximized)
+  (toggle-frame-maximized))
+
+;; Indenting
+(electric-indent-mode 1)
 
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -118,12 +123,6 @@
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
 (global-set-key (kbd "s-n") #'hippie-expand)
-
-;; align code in a pretty way
-(global-set-key (kbd "C-x \\") #'align-regexp)
-
-;; enable narrowing
-(put 'narrow-to-region 'disabled nil)
 
 ;; set ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -213,12 +212,6 @@
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
-
-(use-package smart-mode-line
-  :ensure t
-  :config (progn
-						(setq sml/no-confirm-load-theme t)
-						(sml/setup)))
 
 (use-package imenu-anywhere
 	:ensure t
@@ -313,6 +306,9 @@
 ;; don't print the evaluated commands
 (setq ess-eval-visibly nil)
 
+;; style
+(setq ess-default-style 'RStudio)
+
 ;; "Highlights delimiters such as parentheses, brackets or braces according to their depth."
 (add-hook 'ess-mode-hook #'rainbow-delimiters-mode)
 
@@ -404,7 +400,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -584,5 +580,22 @@ and the point, not include the isearch word."
   (isearch-search-and-update))
 
 (define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
+
+
+;;;; Tidy up the mode-line.  I don't need to see everything in there.
+(require 'diminish)
+(eval-after-load "aggressive-indent" '(diminish 'aggressive-indent-mode " →"))
+(eval-after-load "anzu"              '(diminish 'anzu-mode))
+(eval-after-load "auto-complete"     '(diminish 'auto-complete-mode " α"))
+(eval-after-load "smartparens"       '(diminish 'smartparens-mode))
+(eval-after-load "undo-tree"         '(diminish 'undo-tree-mode " τ"))
+(eval-after-load "which-key"         '(diminish 'which-key-mode))
+(eval-after-load "beacon"            '(diminish 'beacon-mode))
+(eval-after-load "hungry-delete"     '(diminish 'hungry-delete-mode))
+(eval-after-load "company"           '(diminish 'company-mode))
+
+(require 'powerline)
+(powerline-default-theme)
+
 
 
