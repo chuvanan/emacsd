@@ -117,6 +117,7 @@
 ;; use hippie-expand instead of dabbrev
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
+(global-set-key (kbd "s-n") #'hippie-expand)
 
 ;; align code in a pretty way
 (global-set-key (kbd "C-x \\") #'align-regexp)
