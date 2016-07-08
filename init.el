@@ -62,6 +62,9 @@
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message nil)
 
+;; turn off bidirectional text
+(setq-default bidi-paragraph-direction 'left-to-right)
+
 ;; mode line settings
 (line-number-mode t)
 (column-number-mode t)
