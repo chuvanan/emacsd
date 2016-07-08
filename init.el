@@ -158,11 +158,8 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-(use-package avy-jump                   ; Jump to characters in buffers
-  :ensure avy
-  :bind (("C-c j" . avy-pop-mark)))
-
-(use-package saveplace                  ; Save point position in files
+;; Save point position in files
+(use-package saveplace
   :init (save-place-mode 1))
 
 (use-package ibuffer                    ; Better buffer list
@@ -473,7 +470,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -679,5 +676,3 @@ and the point, not include the isearch word."
         (kill-buffer buffer))
     ad-do-it))
 (ad-activate 'term-sentinel)
-
-(setq explicit-shell-file-name "/bin/bash")
