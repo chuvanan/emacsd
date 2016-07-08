@@ -608,5 +608,13 @@ and the point, not include the isearch word."
 (powerline-default-theme)
 (setq powerline-arrow-shape 'arrow14)
 
+;; exit ansi-term
+(defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
+  (if (memq (process-status proc) '(signal exit))
+      (let ((buffer (process-buffer proc)))
+        ad-do-it
+        (kill-buffer buffer))
+    ad-do-it))
+(ad-activate 'term-sentinel)
 
-
+(setq explicit-shell-file-name "/bin/bash")
