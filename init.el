@@ -61,6 +61,7 @@
 (setq inhibit-startup-screen t)
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message nil)
+(fset 'display-startup-echo-area-message #'ignore)
 
 ;; turn off bidirectional text
 (setq-default bidi-paragraph-direction 'left-to-right)
@@ -128,7 +129,7 @@
 (global-set-key (kbd "s-n") #'hippie-expand)
 
 ;; set ibuffer
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+;; (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; set join line instead of fill paragraph
 (global-set-key (kbd "M-q") 'delete-indentation)
@@ -147,9 +148,71 @@
 (autoload 'csv-mode "csv-mode"
   "Major mode for editing comma-separated value files." t)
 
+;;; Rings and registers
+(setq kill-ring-max 200                 ; More killed items
+      kill-do-not-save-duplicates t     ; No duplicates in kill ring
+      ;; Save the contents of the clipboard to kill ring before killing
+      save-interprogram-paste-before-kill t)
+
 ;; use-package
 (require 'use-package)
 (setq use-package-verbose t)
+
+(use-package avy-jump                   ; Jump to characters in buffers
+  :ensure avy
+  :bind (("C-c j" . avy-pop-mark)))
+
+(use-package saveplace                  ; Save point position in files
+  :init (save-place-mode 1))
+
+(use-package ibuffer                    ; Better buffer list
+  :bind (([remap list-buffers] . ibuffer))
+  ;; Show VC Status in ibuffer
+  :config
+  (setq ibuffer-formats
+        '((mark modified read-only vc-status-mini " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                (vc-status 16 16 :left)
+                " "
+                filename-and-process)
+          (mark modified read-only " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " " filename-and-process)
+          (mark " " (name 16 -1) " " filename))))
+
+(use-package ibuffer-vc                 ; Group buffers by VC project and status
+  :ensure t
+  :defer t
+  :init (add-hook 'ibuffer-hook
+                  (lambda ()
+                    (ibuffer-vc-set-filter-groups-by-vc-root)
+                    (unless (eq ibuffer-sorting-mode 'alphabetic)
+                      (ibuffer-do-sort-by-alphabetic)))))
+
+;; Save minibuffer history
+(use-package savehist
+  :init (savehist-mode t)
+  :config (setq savehist-save-minibuffer-history t
+                savehist-autosave-interval 180))
+
+;; Describe key bindings with Helm
+(use-package helm-descbinds
+  :ensure t
+  :init (helm-descbinds-mode))
+
+;; add stripes to a buffer
+(use-package stripe-buffer
+  :ensure t
+  :init (add-hook 'dired-mode-hook #'stripe-buffer-mode))
 
 (use-package rainbow-delimiters
   :ensure t)
