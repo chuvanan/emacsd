@@ -161,8 +161,9 @@
 ;; yas-snipppet
 (use-package yasnippet
   :ensure t
-  :defer t
-  :diminish (yas-minor-mode . " Ⓨ"))
+  :config
+  (yas-reload-all)
+  (add-hook 'ess-mode-hook #'yas-minor-mode))
 
 ;; Save point position in files
 (use-package saveplace
@@ -669,6 +670,7 @@ and the point, not include the isearch word."
 (eval-after-load "beacon"            '(diminish 'beacon-mode))
 (eval-after-load "hungry-delete"     '(diminish 'hungry-delete-mode))
 (eval-after-load "company"           '(diminish 'company-mode))
+(eval-after-load "yasnippet"         '(diminish 'yasnippet-mode))
 
 (require 'powerline)
 (powerline-default-theme)
