@@ -163,7 +163,8 @@
   :ensure t
   :config
   (yas-reload-all)
-  (add-hook 'ess-mode-hook #'yas-minor-mode))
+  (add-hook 'ess-mode-hook #'yas-minor-mode)
+  (add-hook 'markdown-mode-hook #'yas-minor-mode))
 
 ;; Save point position in files
 (use-package saveplace
