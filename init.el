@@ -158,6 +158,12 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
+;; yas-snipppet
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :diminish (yas-minor-mode . " Ⓨ"))
+
 ;; Save point position in files
 (use-package saveplace
   :init (save-place-mode 1))
