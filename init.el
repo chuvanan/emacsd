@@ -70,6 +70,9 @@
 (line-number-mode t)
 (column-number-mode t)
 
+;; mouse avoidance
+(mouse-avoidance-mode 'banish)
+
 ;; disable scroll-bar
 (scroll-bar-mode -1)
 
