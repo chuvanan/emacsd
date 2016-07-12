@@ -11,7 +11,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-n(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (setq user-full-name "An Chu"
       user-mail-address "chuvanan.cva@gmail.com")
@@ -133,9 +133,6 @@ n(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (global-set-key (kbd "s-/") #'hippie-expand)
 (global-set-key (kbd "s-n") #'hippie-expand)
 
-;; set ibuffer
-;; (global-set-key (kbd "C-x C-b") 'ibuffer)
-
 ;; set join line instead of fill paragraph
 (global-set-key (kbd "M-q") 'delete-indentation)
 
@@ -181,7 +178,8 @@ n(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (use-package saveplace
   :init (save-place-mode 1))
 
-(use-package ibuffer                    ; Better buffer list
+;; ibuffer
+(use-package ibuffer
   :bind (([remap list-buffers] . ibuffer))
   ;; Show VC Status in ibuffer
   :config
@@ -205,7 +203,7 @@ n(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
                 " " filename-and-process)
           (mark " " (name 16 -1) " " filename))))
 
-(use-package ibuffer-vc                 ; Group buffers by VC project and status
+(use-package ibuffer-vc
   :ensure t
   :defer t
   :init (add-hook 'ibuffer-hook
