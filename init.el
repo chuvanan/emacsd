@@ -11,7 +11,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+n(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (setq user-full-name "An Chu"
       user-mail-address "chuvanan.cva@gmail.com")
@@ -113,6 +113,8 @@
 (global-set-key (kbd "<f6>") 'calculator)
 (global-set-key (kbd "M-]") 'forward-paragraph)
 (global-set-key (kbd "M-[") 'backward-paragraph)
+(global-set-key (kbd "M-n") 'forward-paragraph)
+(global-set-key (kbd "M-p") 'backward-paragraph)
 
 ;; hippie expand is dabbrev expand on steroids
 (setq hippie-expand-try-functions-list '(try-expand-dabbrev
@@ -455,8 +457,8 @@
      (ess-R-fl-keyword:keywords . t)
      (ess-R-fl-keyword:assign-ops)
      (ess-R-fl-keyword:constants . t)
-     (ess-fl-keyword:fun-calls)
-     (ess-fl-keyword:numbers)
+     (ess-fl-keyword:fun-calls . t)
+     (ess-fl-keyword:numbers . t)
      (ess-fl-keyword:operators)
      (ess-fl-keyword:delimiters)
      (ess-fl-keyword:=)
@@ -707,4 +709,4 @@ and the point, not include the isearch word."
 ;; Evaluate Babel blocks without asking for confirmation
 (setq org-confirm-babel-evaluate nil)
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
-(add-hook 'org-mode-hook 'org-display-inline-images)   
+(add-hook 'org-mode-hook 'org-display-inline-images)
