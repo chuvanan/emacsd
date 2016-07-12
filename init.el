@@ -456,7 +456,7 @@
      (ess-R-fl-keyword:assign-ops)
      (ess-R-fl-keyword:constants . t)
      (ess-fl-keyword:fun-calls . t)
-     (ess-fl-keyword:numbers)
+     (ess-fl-keyword:numbers . t)
      (ess-fl-keyword:operators)
      (ess-fl-keyword:delimiters)
      (ess-fl-keyword:=)
