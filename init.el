@@ -11,7 +11,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+n(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (setq user-full-name "An Chu"
       user-mail-address "chuvanan.cva@gmail.com")
@@ -113,6 +113,8 @@
 (global-set-key (kbd "<f6>") 'calculator)
 (global-set-key (kbd "M-]") 'forward-paragraph)
 (global-set-key (kbd "M-[") 'backward-paragraph)
+(global-set-key (kbd "M-n") 'forward-paragraph)
+(global-set-key (kbd "M-p") 'backward-paragraph)
 
 ;; hippie expand is dabbrev expand on steroids
 (setq hippie-expand-try-functions-list '(try-expand-dabbrev
