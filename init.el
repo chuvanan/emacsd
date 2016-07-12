@@ -405,23 +405,16 @@
 (setq inferior-S-prompt "[]a-zA-Z0-9.[]*\\(?:[>+.] \\)*ℝ+> ")
 
 (setq load-path (append '("/home/anchu/.emacs.d/polymode/" "/home/anchu/.emacs.d/polymode/modes") load-path))
-(require 'poly-R)
-(require 'poly-markdown)
-
-;; markdown
-(add-to-list 'auto-mode-alist '("\\.md$" . poly-markdown-mode))
-
-;; R related modes
-(add-to-list 'auto-mode-alist '("\\.Snw$" . poly-noweb+r-mode))
-(add-to-list 'auto-mode-alist '("\\.Rnw$" . poly-noweb+r-mode))
-(add-to-list 'auto-mode-alist '("\\.Rmd$" . poly-markdown+r-mode))
-(add-to-list 'auto-mode-alist '("\\.rapport$" . poly-rapport-mode))
-(add-to-list 'auto-mode-alist '("\\.Rhtml$" . poly-html+r-mode))
-(add-to-list 'auto-mode-alist '("\\.Rbrew$" . poly-brew+r-mode))
-(add-to-list 'auto-mode-alist '("\\.Rcpp$" . poly-r+c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cppR$" . poly-c++r-mode))
-
-(provide 'polymode-configuration)
+(use-package polymode
+  :ensure t
+  :config
+  (require 'poly-R)
+  (require 'poly-markdown)
+  (add-to-list 'auto-mode-alist '("\\.md$" . poly-markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.Rmd$" . poly-markdown+r-mode))
+  (add-to-list 'auto-mode-alist '("\\.Rcpp$" . poly-r+c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cppR$" . poly-c++r-mode))
+  )
 
 ;; chain operator
 (defun then_R_operator ()
@@ -485,9 +478,11 @@
      (ess-fl-keyword:delimiters)
      (ess-fl-keyword:=)
      (ess-R-fl-keyword:F&T))))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (R . t))))
+ '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
-    (multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -566,8 +561,6 @@
         (ess-show-buffer (buffer-name sbuffer) nil)))))
 
 (define-key polymode-mode-map "\M-nr" 'ess-rshiny)
-
-(global-set-key (kbd "C-`") 'push-mark-no-activate)
 
 (defun jump-to-mark ()
   "Jumps to the local mark, respecting the `mark-ring' order.
@@ -694,3 +687,26 @@ and the point, not include the isearch word."
         (kill-buffer buffer))
     ad-do-it))
 (ad-activate 'term-sentinel)
+
+;; Active Babel languages
+;; See http://orgmode.org/org.html#Languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (ditaa . t)
+   (dot . t)
+   (latex . t)
+   (lilypond . t)
+   (python . t)
+   (R . t)
+   (ruby . t)
+   (shell . t)
+   (sql . t)
+   (sqlite . t)
+   )
+ )
+
+;; Evaluate Babel blocks without asking for confirmation
+(setq org-confirm-babel-evaluate nil)
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
+(add-hook 'org-mode-hook 'org-display-inline-images)   
