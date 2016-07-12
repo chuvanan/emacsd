@@ -711,4 +711,4 @@ and the point, not include the isearch word."
 ;; Evaluate Babel blocks without asking for confirmation
 (setq org-confirm-babel-evaluate nil)
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
-(add-hook 'org-mode-hook 'org-display-inline-images)   
+(add-hook 'org-mode-hook 'org-display-inline-images)
