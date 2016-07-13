@@ -113,8 +113,6 @@
 (global-set-key (kbd "<f6>") 'calculator)
 (global-set-key (kbd "M-]") 'forward-paragraph)
 (global-set-key (kbd "M-[") 'backward-paragraph)
-(global-set-key (kbd "M-n") 'forward-paragraph)
-(global-set-key (kbd "M-p") 'backward-paragraph)
 
 ;; hippie expand is dabbrev expand on steroids
 (setq hippie-expand-try-functions-list '(try-expand-dabbrev
@@ -164,7 +162,10 @@
 (use-package multiple-cursors
   :ensure t
   :config
-  (global-set-key (kbd "C-c m") 'mc/edit-lines))
+  (global-set-key (kbd "C-c m") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this))
 
 ;; yas-snipppet
 (use-package yasnippet
