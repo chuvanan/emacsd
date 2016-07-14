@@ -158,6 +158,13 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
+;; go to last change
+(use-package goto-last-change
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x C-\\") 'goto-last-change))
+
+
 ;; multiple cursors
 (use-package multiple-cursors
   :ensure t
