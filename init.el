@@ -36,8 +36,10 @@
 ;; visual line
 (setq line-move-visual t)
 (setq scroll-margin 3)
+(setq scroll-step            1
+      scroll-conservatively  10000)
 ;; (fringe-mode 0)
-(fringe-mode '(8 . 0))
+(fringe-mode '(4 . 0))
 
 ;; set fill column to 80 characters
 (setq-default fill-column 80)
@@ -62,6 +64,7 @@
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message nil)
 (fset 'display-startup-echo-area-message #'ignore)
+;; (set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
 
 ;; turn off bidirectional text
 (setq-default bidi-paragraph-direction 'left-to-right)
@@ -380,9 +383,18 @@
   :ensure t
   :config
   (global-company-mode)
-  (setq company-idle-delay .3)
+  (setq company-idle-delay 0)
   (setq company-echo-delay 0)
   (setq company-begin-commands '(self-insert-command)))
+
+(require 'company-dabbrev)
+(require 'company-dabbrev-code)
+(setq company-dabbrev-code-everywhere t)
+(setq company-dabbrev-code-ignore-case nil)
+(setq company-dabbrev-ignore-case nil)
+(add-to-list 'company-dabbrev-code-modes 'ess-mode)
+(define-key company-active-map [tab] 'company-complete-common-or-cycle)
+(define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
 
 (use-package expand-region
   :commands er/expand-region
@@ -501,7 +513,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
 
-
+(setq show-paren-delay 0)
 ;; redefinde kill line and kill region
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
@@ -716,3 +728,26 @@ and the point, not include the isearch word."
 (setq org-confirm-babel-evaluate nil)
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
 (add-hook 'org-mode-hook 'org-display-inline-images)
+
+(defun anchu-set-cursor ()
+  (set-cursor-color "gold") ;; set cursor color to gold
+  (cond
+   (buffer-read-only
+    (setq cursor-type 'box))
+   (t
+    (setq cursor-type 'bar)))
+  ;; red cursor for overwrite mode
+  (when overwrite-mode
+    (set-cursor-color "red")))
+
+(add-hook 'post-command-hook 'anchu-set-cursor)
+
+
+;; kill as exit
+(require 'cl)
+(defadvice save-buffers-kill-emacs
+  (around no-query-kill-emacs activate)
+  "Prevent \"Active processes exist\" query on exit."
+  (flet ((process-list ())) ad-do-it))
+
+(set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
