@@ -105,7 +105,7 @@
 (set-keyboard-coding-system 'utf-8)
 
 ;; speed up echo commands
-(setq echo-keystrokes 0.1)
+(setq echo-keystrokes 0)
 
 ;; switch to other window
 ;; (global-set-key (kbd "M-o") 'other-window)
