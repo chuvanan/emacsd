@@ -132,7 +132,6 @@
 ;; use hippie-expand instead of dabbrev
 (global-set-key (kbd "M-/") #'hippie-expand)
 (global-set-key (kbd "s-/") #'hippie-expand)
-(global-set-key (kbd "s-n") #'hippie-expand)
 
 ;; set join line instead of fill paragraph
 (global-set-key (kbd "M-q") 'delete-indentation)
@@ -145,11 +144,6 @@
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
-
-;; csv mode
-(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
-(autoload 'csv-mode "csv-mode"
-  "Major mode for editing comma-separated value files." t)
 
 ;;; Rings and registers
 (setq kill-ring-max 200                 ; More killed items
@@ -166,7 +160,6 @@
   :ensure t
   :config
   (global-set-key (kbd "C-x C-\\") 'goto-last-change))
-
 
 ;; multiple cursors
 (use-package multiple-cursors
@@ -228,11 +221,6 @@
   :init (savehist-mode t)
   :config (setq savehist-save-minibuffer-history t
                 savehist-autosave-interval 180))
-
-;; Describe key bindings with Helm
-(use-package helm-descbinds
-  :ensure t
-  :init (helm-descbinds-mode))
 
 ;; add stripes to a buffer
 (use-package stripe-buffer
