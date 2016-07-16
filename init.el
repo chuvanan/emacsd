@@ -670,11 +670,11 @@ and the point, not include the isearch word."
 
 ;;;; Tidy up the mode-line.  I don't need to see everything in there.
 (require 'diminish)
-(eval-after-load "aggressive-indent" '(diminish 'aggressive-indent-mode " →"))
+(eval-after-load "aggressive-indent" '(diminish 'aggressive-indent-mode))
 (eval-after-load "anzu"              '(diminish 'anzu-mode))
-(eval-after-load "auto-complete"     '(diminish 'auto-complete-mode " α"))
+(eval-after-load "auto-complete"     '(diminish 'auto-complete-mode))
 (eval-after-load "smartparens"       '(diminish 'smartparens-mode))
-(eval-after-load "undo-tree"         '(diminish 'undo-tree-mode " τ"))
+(eval-after-load "undo-tree"         '(diminish 'undo-tree-mode))
 (eval-after-load "which-key"         '(diminish 'which-key-mode))
 (eval-after-load "beacon"            '(diminish 'beacon-mode))
 (eval-after-load "hungry-delete"     '(diminish 'hungry-delete-mode))
