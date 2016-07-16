@@ -35,7 +35,7 @@
 
 ;; visual line
 (setq line-move-visual t)
-(setq scroll-margin 3)
+(setq scroll-margin 5)
 (setq scroll-step            1
       scroll-conservatively  10000)
 ;; (fringe-mode 0)
@@ -403,7 +403,7 @@
 (use-package aggressive-indent
   :ensure t
   :config
-	(add-hook 'ess-mode 'aggressive-indent-mode))
+	(add-hook 'ess-mode-hook #'aggressive-indent-mode))
 
 (require 'ess-site)
 (require 'ess-rutils)
