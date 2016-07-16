@@ -739,3 +739,10 @@ and the point, not include the isearch word."
   (flet ((process-list ())) ad-do-it))
 
 (set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
+
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
+(global-set-key (kbd "C-c I") 'find-user-init-file)
