@@ -41,6 +41,7 @@
 ;; (fringe-mode 0)
 (fringe-mode '(4 . 0))
 
+
 ;; set fill column to 80 characters
 (setq-default fill-column 80)
 (setq-default default-tab-width 2)
@@ -404,6 +405,12 @@
 ;; style
 (setq ess-default-style 'RStudio)
 
+;; company backend
+(setq-local company-backends
+            (append '((company-dabbrev-code company-R-args company-R-objects))
+                    company-backends))
+(setq ess-use-company nil)
+
 ;; "Highlights delimiters such as parentheses, brackets or braces according to their depth."
 (add-hook 'ess-mode-hook #'rainbow-delimiters-mode)
 
@@ -488,7 +495,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -714,7 +721,7 @@ and the point, not include the isearch word."
 
 ;; Evaluate Babel blocks without asking for confirmation
 (setq org-confirm-babel-evaluate nil)
-(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
 (add-hook 'org-mode-hook 'org-display-inline-images)
 
 (defun anchu-set-cursor ()
@@ -738,7 +745,7 @@ and the point, not include the isearch word."
   "Prevent \"Active processes exist\" query on exit."
   (flet ((process-list ())) ad-do-it))
 
-(set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
+
 
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
@@ -761,3 +768,5 @@ and the point, not include the isearch word."
           (set-visited-file-name new-name t t)))))))
 
 (global-set-key (kbd "C-c r")  'rename-file-and-buffer)
+
+(set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
