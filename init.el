@@ -358,15 +358,10 @@
   :config
   (window-numbering-mode 1))
 
-;; (use-package zenburn-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'zenburn t))
-
-(use-package color-theme-sanityinc-tomorrow
+(use-package zenburn-theme
   :ensure t
   :config
-  (load-theme 'sanityinc-tomorrow-eighties t))
+  (load-theme 'zenburn t))
 
 (use-package magit
   :ensure t
