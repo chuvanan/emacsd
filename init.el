@@ -42,7 +42,7 @@
       scroll-conservatively  10000)
 ;; (fringe-mode 0)
 (fringe-mode '(4 . 0))
-
+(put 'narrow-to-region 'disabled nil)
 
 ;; set fill column to 80 characters
 (setq-default fill-column 80)
