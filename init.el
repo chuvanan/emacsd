@@ -35,8 +35,10 @@
 
 ;; visual line
 (setq line-move-visual t)
-(setq scroll-margin 5)
-(setq scroll-step            1
+(setq scroll-step 1
+      scroll-margin 5
+      hscroll-step 1
+      hscroll-margin 3
       scroll-conservatively  10000)
 ;; (fringe-mode 0)
 (fringe-mode '(4 . 0))
