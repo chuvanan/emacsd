@@ -731,15 +731,16 @@ and the point, not include the isearch word."
 (add-hook 'org-mode-hook 'org-display-inline-images)
 
 (defun anchu-set-cursor ()
-  (set-cursor-color "gold") ;; set cursor color to gold
   (cond
    (buffer-read-only
-    (setq cursor-type 'box))
+    (setq cursor-type 'box)
+    (set-cursor-color "red"))
    (t
-    (setq cursor-type 'bar)))
+    (setq cursor-type 'box)
+    (set-cursor-color "gray")))
   ;; red cursor for overwrite mode
   (when overwrite-mode
-    (set-cursor-color "red")))
+    (set-cursor-color "gold")))
 
 (add-hook 'post-command-hook 'anchu-set-cursor)
 
