@@ -28,10 +28,10 @@
 
 ;; disable tool-bar mode
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
 (global-hl-line-mode +1)
 
-;; disable menu bar
-(menu-bar-mode -1)
 
 ;; visual line
 (setq line-move-visual t)
@@ -67,7 +67,6 @@
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message nil)
 (fset 'display-startup-echo-area-message #'ignore)
-;; (set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
 
 ;; turn off bidirectional text
 (setq-default bidi-paragraph-direction 'left-to-right)
@@ -78,9 +77,6 @@
 
 ;; mouse avoidance
 (mouse-avoidance-mode 'banish)
-
-;; disable scroll-bar
-(scroll-bar-mode -1)
 
 ;; fullscreen
 (when (fboundp 'toggle-frame-maximized)
@@ -151,7 +147,6 @@
 ;;; Rings and registers
 (setq kill-ring-max 200                 ; More killed items
       kill-do-not-save-duplicates t     ; No duplicates in kill ring
-      ;; Save the contents of the clipboard to kill ring before killing
       save-interprogram-paste-before-kill t)
 
 ;; use-package
@@ -260,7 +255,7 @@
   (setq beacon-push-mark 35)
   (setq beacon-color "#666600")
   (setq beacon-blink-duration 0.2)
-  (setq beacon-size 30)
+  (setq beacon-size 40)
   (setq beacon-dont-blink-major-modes
         (append beacon-dont-blink-major-modes '(inferior-ess-mode))))
 
@@ -289,11 +284,6 @@
   ;; don't muck with special buffers
   (setq uniquify-ignore-buffers-re "^\\*"))
 
-;; (use-package ido-ubiquitous
-;;   :ensure t
-;;   :config
-;;   (ido-ubiquitous-mode +1))
-
 (use-package keyfreq
   :ensure t
   :config
@@ -306,11 +296,8 @@
 
 (use-package avy
   :ensure t
-  :bind (("M-s M-s" . avy-goto-word-or-subword-1)))
-
-(use-package smex
-  :ensure t
-  :bind ("M-x" . smex))
+  :bind (("M-s M-s" . avy-goto-word-or-subword-1)
+         ("C-;" . avy-goto-word-or-subword-1)))
 
 (use-package which-key
   :ensure t
@@ -336,24 +323,6 @@
 	:config
   (setq dired-listing-switches "-alh")
 	(require 'dired-x))
-
-;; (use-package ido
-;;   :ensure t
-;;   :config
-;;   (setq ido-enable-prefix nil
-;;         ido-enable-flex-matching t
-;;         ido-create-new-buffer 'always
-;;         ido-use-filename-at-point 'guess
-;;         ido-max-prospects 10
-;;         ido-default-file-method 'selected-window
-;;         ido-auto-merge-work-directories-length -1)
-;;   (ido-mode +1))
-
-;; (use-package ido-vertical-mode
-;;   :ensure t
-;;   :config
-;;   (ido-vertical-mode +1)
-;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 (use-package window-numbering
   :ensure t
@@ -402,13 +371,8 @@
 
 (require 'ess-site)
 (require 'ess-rutils)
-;; (autoload 'r-mode "ess-site" "(Autoload)" t)
-;; dont ask for new data directory
 (setq ess-ask-for-ess-directory nil)
-;; don't print the evaluated commands
 (setq ess-eval-visibly nil)
-
-;; style
 (setq ess-default-style 'RStudio)
 
 ;; company backend
@@ -421,7 +385,6 @@
 (add-hook 'ess-mode-hook #'rainbow-delimiters-mode)
 
 ;; Fancy up the prompt (see also ~/.Rprofile)
-;; http://www.wisdomandwonder.com/article/9687/i-wasted-time-with-a-custom-prompt-for-r-with-ess
 (setq inferior-ess-primary-prompt "ℝ> ")
 (setq inferior-S-prompt "[]a-zA-Z0-9.[]*\\(?:[>+.] \\)*ℝ+> ")
 
@@ -529,12 +492,6 @@
       (list (line-beginning-position)
         (line-beginning-position 2)))))
 
-(defadvice ido-find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
 (defun ess-rmarkdown ()
   "Compile R markdown (.Rmd). Should work for any output type."
   (interactive)
@@ -633,38 +590,7 @@ This is useful when followed by an immediate kill."
 
 (define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
 
-;; http://www.emacswiki.org/emacs/ZapToISearch
-(defun zap-to-isearch (rbeg rend)
-  "Kill the region between the mark and the closest portion of
-the isearch match string. The behaviour is meant to be analogous
-to zap-to-char; let's call it zap-to-isearch. The deleted region
-does not include the isearch word. This is meant to be bound only
-in isearch mode.  The point of this function is that oftentimes
-you want to delete some portion of text, one end of which happens
-to be an active isearch word. The observation to make is that if
-you use isearch a lot to move the cursor around (as you should,
-it is much more efficient than using the arrows), it happens a
-lot that you could just delete the active region between the mark
-and the point, not include the isearch word."
-  (interactive "r")
-  (when (not mark-active)
-    (error "Mark is not active"))
-  (let* ((isearch-bounds (list isearch-other-end (point)))
-         (ismin (apply 'min isearch-bounds))
-         (ismax (apply 'max isearch-bounds))
-         )
-    (if (< (mark) ismin)
-        (kill-region (mark) ismin)
-      (if (> (mark) ismax)
-          (kill-region ismax (mark))
-        (error "Internal error in isearch kill function.")))
-    (isearch-exit)
-    ))
-
-(define-key isearch-mode-map [(meta z)] 'zap-to-isearch)
-
 ;; Search back/forth for the symbol at point
-;; See http://www.emacswiki.org/emacs/SearchAtPoint
 (defun isearch-yank-symbol ()
   "*Put symbol at current point into search string."
   (interactive)
@@ -693,6 +619,7 @@ and the point, not include the isearch word."
 (eval-after-load "hungry-delete"     '(diminish 'hungry-delete-mode))
 (eval-after-load "company"           '(diminish 'company-mode))
 (eval-after-load "yasnippet"         '(diminish 'yasnippet-mode))
+(eval-after-load "helm"         '(diminish 'helm-mode))
 
 (require 'powerline)
 (powerline-default-theme)
@@ -708,7 +635,6 @@ and the point, not include the isearch word."
 (ad-activate 'term-sentinel)
 
 ;; Active Babel languages
-;; See http://orgmode.org/org.html#Languages
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
@@ -734,13 +660,13 @@ and the point, not include the isearch word."
   (cond
    (buffer-read-only
     (setq cursor-type 'box)
-    (set-cursor-color "red"))
+    (set-cursor-color "gold"))
    (t
     (setq cursor-type 'box)
     (set-cursor-color "gray")))
   ;; red cursor for overwrite mode
   (when overwrite-mode
-    (set-cursor-color "gold")))
+    (set-cursor-color "red")))
 
 (add-hook 'post-command-hook 'anchu-set-cursor)
 
@@ -753,12 +679,10 @@ and the point, not include the isearch word."
   (flet ((process-list ())) ad-do-it))
 
 
-
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file-other-window user-init-file))
-
 (global-set-key (kbd "C-c I") 'find-user-init-file)
 
 (defun rename-file-and-buffer ()
@@ -776,6 +700,7 @@ and the point, not include the isearch word."
 
 (global-set-key (kbd "C-c r")  'rename-file-and-buffer)
 
+;; remove vertical line between windows
 (set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
 
 (defun check-expansion ()
