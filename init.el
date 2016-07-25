@@ -333,11 +333,6 @@
   :config
   (window-numbering-mode 1))
 
-;; (use-package zenburn-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'zenburn t))
-
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
@@ -474,7 +469,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (w3m ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -491,16 +486,16 @@
 ;; redefinde kill line and kill region
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
-  (interactive (if mark-active (list (region-beginning) (region-end)) (message
-  "Copied line") (list (line-beginning-position) (line-beginning-position
-  2)))))
+           (interactive (if mark-active (list (region-beginning) (region-end)) (message
+                                                                                "Copied line") (list (line-beginning-position) (line-beginning-position
+                                                                                                                                2)))))
 
 (defadvice kill-region (before slick-cut activate compile)
   "When called interactively with no active region, kill a single line instead."
   (interactive
-    (if mark-active (list (region-beginning) (region-end))
-      (list (line-beginning-position)
-        (line-beginning-position 2)))))
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
 
 (defun ess-rmarkdown ()
   "Compile R markdown (.Rmd). Should work for any output type."
@@ -806,17 +801,16 @@ This is useful when followed by an immediate kill."
       helm-ff-skip-boring-files t)
 
 (use-package helm-swoop
- :bind
- (("M-i" . helm-swoop)
-  ("M-I" . helm-swoop-back-to-last-point)
-  ("C-c M-i" . helm-multi-swoop)
-  ("C-x M-i" . helm-multi-swoop-all)
+  :bind
+  (("M-i" . helm-swoop)
+   ("M-I" . helm-swoop-back-to-last-point)
+   ("C-c M-i" . helm-multi-swoop)
+   ("C-x M-i" . helm-multi-swoop-all))
+  :config
+  (progn
+    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
   )
- :config
- (progn
-   (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-   (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
-)
 
 ;; Save buffer when helm-multi-swoop-edit complete
 (setq helm-multi-swoop-edit-save t)
