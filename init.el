@@ -2,6 +2,7 @@
 
 ;;; Code:
 
+(require 'cl)
 (require 'package)
 
 (add-to-list 'package-archives
@@ -340,7 +341,7 @@
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
-  (load-theme 'sanityinc-tomorrow-eighties))
+  (load-theme 'sanityinc-tomorrow-eighties t))
 
 (use-package magit
   :ensure t
@@ -484,7 +485,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 95 :width normal)))))
+ '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 95 :width condensed)))))
 
 (setq show-paren-delay 0)
 ;; redefinde kill line and kill region
@@ -681,9 +682,8 @@ This is useful when followed by an immediate kill."
 
 
 ;; kill as exit
-(require 'cl)
 (defadvice save-buffers-kill-emacs
-  (around no-query-kill-emacs activate)
+    (around no-query-kill-emacs activate)
   "Prevent \"Active processes exist\" query on exit."
   (flet ((process-list ())) ad-do-it))
 
