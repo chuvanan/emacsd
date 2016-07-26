@@ -469,7 +469,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (w3m ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -480,7 +480,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 95 :width condensed)))))
+ '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 95 :width normal)))))
 
 (setq show-paren-delay 0)
 ;; redefinde kill line and kill region
