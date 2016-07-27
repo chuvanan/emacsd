@@ -189,38 +189,38 @@
   :init (save-place-mode 1))
 
 ;; ibuffer
-(use-package ibuffer
-  :bind (([remap list-buffers] . ibuffer))
-  ;; Show VC Status in ibuffer
-  :config
-  (setq ibuffer-formats
-        '((mark modified read-only vc-status-mini " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " "
-                (vc-status 16 16 :left)
-                " "
-                filename-and-process)
-          (mark modified read-only " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " " filename-and-process)
-          (mark " " (name 16 -1) " " filename))))
+;; (use-package ibuffer
+;;   :bind (([remap list-buffers] . ibuffer))
+;;   ;; Show VC Status in ibuffer
+;;   :config
+;;   (setq ibuffer-formats
+;;         '((mark modified read-only vc-status-mini " "
+;;                 (name 18 18 :left :elide)
+;;                 " "
+;;                 (size 9 -1 :right)
+;;                 " "
+;;                 (mode 16 16 :left :elide)
+;;                 " "
+;;                 (vc-status 16 16 :left)
+;;                 " "
+;;                 filename-and-process)
+;;           (mark modified read-only " "
+;;                 (name 18 18 :left :elide)
+;;                 " "
+;;                 (size 9 -1 :right)
+;;                 " "
+;;                 (mode 16 16 :left :elide)
+;;                 " " filename-and-process)
+;;           (mark " " (name 16 -1) " " filename))))
 
-(use-package ibuffer-vc
-  :ensure t
-  :defer t
-  :init (add-hook 'ibuffer-hook
-                  (lambda ()
-                    (ibuffer-vc-set-filter-groups-by-vc-root)
-                    (unless (eq ibuffer-sorting-mode 'alphabetic)
-                      (ibuffer-do-sort-by-alphabetic)))))
+;; (use-package ibuffer-vc
+;;   :ensure t
+;;   :defer t
+;;   :init (add-hook 'ibuffer-hook
+;;                   (lambda ()
+;;                     (ibuffer-vc-set-filter-groups-by-vc-root)
+;;                     (unless (eq ibuffer-sorting-mode 'alphabetic)
+;;                       (ibuffer-do-sort-by-alphabetic)))))
 
 ;; Save minibuffer history
 (use-package savehist
@@ -320,7 +320,7 @@
   (setq recentf-max-saved-items 500
         recentf-max-menu-items 15
         recentf-auto-cleanup 'never)
-	(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+	;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
   (recentf-mode +1))
 
 (use-package dired
@@ -748,7 +748,7 @@ This is useful when followed by an immediate kill."
 (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 
 (when (executable-find "curl")
-  (setq helm-google-suggest-use-curl-p t))
+  (setq helm-net-prefer-curl t))
 
 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
@@ -756,8 +756,18 @@ This is useful when followed by an immediate kill."
       helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-ff-file-name-history-use-recentf t)
 
+(setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+      helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
+      helm-yas-display-key-on-candidate t
+      helm-quick-update t
+      helm-M-x-requires-pattern nil
+      helm-ff-skip-boring-files t)
+
 (helm-autoresize-mode t)
 
+(global-set-key (kbd "C-h a")    'helm-apropos)
+(global-set-key (kbd "C-h i")    'helm-info-emacs)
+(global-set-key (kbd "C-x C-r") 'helm-recentf)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (setq helm-M-x-fuzzy-match t)
 
@@ -766,22 +776,23 @@ This is useful when followed by an immediate kill."
 (global-set-key (kbd "C-x b") 'helm-mini)
 (setq helm-buffers-fuzzy-matching t
       helm-recentf-fuzzy-match    t)
-
+(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 (setq helm-semantic-fuzzy-match t
       helm-imenu-fuzzy-match    t)
-
+(setq helm-lisp-fuzzy-completion t)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (setq helm-locate-fuzzy-match t)
 (setq helm-apropos-fuzzy-match t)
 (global-set-key (kbd "C-c h x") 'helm-register)
 (global-set-key (kbd "C-c h g") 'helm-google-suggest)
 (global-set-key (kbd "C-x r b") 'helm-filtered-bookmarks)
+(global-set-key (kbd "C-c h SPC") 'helm-all-mark-rings)
 (require 'helm-descbinds)
 (helm-descbinds-mode)
+(global-set-key (kbd "C-h b")    'helm-descbinds)
 (helm-mode 1)
-
 
 ;; projectile mode
 (use-package projectile
@@ -792,13 +803,6 @@ This is useful when followed by an immediate kill."
 (helm-projectile-on)
 (setq projectile-switch-project-action 'helm-projectile)
 (setq projectile-enable-caching t)
-
-(setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-      helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
-      helm-yas-display-key-on-candidate t
-      helm-quick-update t
-      helm-M-x-requires-pattern nil
-      helm-ff-skip-boring-files t)
 
 (use-package helm-swoop
   :bind
@@ -811,6 +815,9 @@ This is useful when followed by an immediate kill."
     (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
     (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
   )
+
+(require 'helm-ag)
+(global-set-key (kbd "C-c g") 'helm-ag)
 
 ;; Save buffer when helm-multi-swoop-edit complete
 (setq helm-multi-swoop-edit-save t)
