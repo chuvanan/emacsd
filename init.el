@@ -783,6 +783,7 @@ This is useful when followed by an immediate kill."
       helm-imenu-fuzzy-match    t)
 (setq helm-lisp-fuzzy-completion t)
 (global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "M-o") 'helm-occur)
 (setq helm-locate-fuzzy-match t)
 (setq helm-apropos-fuzzy-match t)
 (global-set-key (kbd "C-c h x") 'helm-register)
