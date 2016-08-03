@@ -68,6 +68,7 @@
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message nil)
 (fset 'display-startup-echo-area-message #'ignore)
+(setq use-dialog-box nil)
 
 ;; turn off bidirectional text
 (setq-default bidi-paragraph-direction 'left-to-right)
@@ -108,7 +109,8 @@
 (set-keyboard-coding-system 'utf-8)
 
 ;; speed up echo commands
-(setq echo-keystrokes 0)
+(setq echo-keystrokes 0.1)
+(setq focus-follows-mouse t)
 
 ;; switch to other window
 ;; (global-set-key (kbd "M-o") 'other-window)
@@ -296,7 +298,7 @@
 
 (use-package imenu-anywhere
 	:ensure t
-	:bind (("C-." . imenu-anywhere)))
+	:bind (("C-." . helm-imenu-anywhere)))
 
 (use-package avy
   :ensure t
@@ -469,7 +471,7 @@
      (ess-R-fl-keyword:F&T))))
  '(package-selected-packages
    (quote
-    (sml-mode ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (yaml-mode sml-mode ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -845,3 +847,6 @@ This is useful when followed by an immediate kill."
 (setq org-agenda-files '("~/ownCloud/org-mode/"))
 
 (global-set-key (kbd "<f7>") 'ispell-word)
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
