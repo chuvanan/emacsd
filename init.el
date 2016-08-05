@@ -2,7 +2,7 @@
 
 ;;; Code:
 
-(require 'cl)
+;; (require 'cl)
 (require 'package)
 
 (add-to-list 'package-archives
@@ -850,3 +850,12 @@ This is useful when followed by an immediate kill."
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+
+(setq sml-prog-name "/usr/bin/sml")
+(add-to-list 'auto-mode-alist '("\\.\\(sml\\|sig\\)\\'" . sml-mode))
+(defun my-sml-mode-hook () "Local defaults for SML mode"
+       (setq sml-indent-level 2)        ; conserve on horizontal space
+       (setq words-include-escape t)    ; \ loses word break status
+       (setq indent-tabs-mode nil))     ; never ever indent with tabs
+(add-hook 'sml-mode-hook 'my-sml-mode-hook)
