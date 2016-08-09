@@ -109,7 +109,7 @@
 (set-keyboard-coding-system 'utf-8)
 
 ;; speed up echo commands
-(setq echo-keystrokes 0.1)
+(setq echo-keystrokes 0)
 (setq focus-follows-mouse t)
 
 ;; switch to other window
@@ -843,8 +843,9 @@ This is useful when followed by an immediate kill."
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-todo-keywords
-      '((sequence "TODO" "IN-PROGRESS" "DONE" "CANCELED")))
+      '((sequence "TODO" "IN-PROGRESS" "CANCELED" "DONE")))
 (setq org-agenda-files '("~/ownCloud/org-mode/"))
+(setq org-return-follows-link t)
 
 (global-set-key (kbd "<f7>") 'ispell-word)
 
