@@ -860,3 +860,6 @@ This is useful when followed by an immediate kill."
        (setq words-include-escape t)    ; \ loses word break status
        (setq indent-tabs-mode nil))     ; never ever indent with tabs
 (add-hook 'sml-mode-hook 'my-sml-mode-hook)
+
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
