@@ -469,6 +469,7 @@
      (ess-fl-keyword:delimiters)
      (ess-fl-keyword:=)
      (ess-R-fl-keyword:F&T))))
+ '(org-agenda-files (quote ("/home/anchu/ownCloud/org-mode/rta-tasks.org")))
  '(package-selected-packages
    (quote
     (yaml-mode sml-mode ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
@@ -846,6 +847,8 @@ This is useful when followed by an immediate kill."
       '((sequence "TODO" "IN-PROGRESS" "CANCELED" "DONE")))
 (setq org-agenda-files '("~/ownCloud/org-mode/"))
 (setq org-return-follows-link t)
+(setq org-startup-with-inline-images t)
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
 
 (global-set-key (kbd "<f7>") 'ispell-word)
 
