@@ -190,40 +190,6 @@
 (use-package saveplace
   :init (save-place-mode 1))
 
-;; ibuffer
-;; (use-package ibuffer
-;;   :bind (([remap list-buffers] . ibuffer))
-;;   ;; Show VC Status in ibuffer
-;;   :config
-;;   (setq ibuffer-formats
-;;         '((mark modified read-only vc-status-mini " "
-;;                 (name 18 18 :left :elide)
-;;                 " "
-;;                 (size 9 -1 :right)
-;;                 " "
-;;                 (mode 16 16 :left :elide)
-;;                 " "
-;;                 (vc-status 16 16 :left)
-;;                 " "
-;;                 filename-and-process)
-;;           (mark modified read-only " "
-;;                 (name 18 18 :left :elide)
-;;                 " "
-;;                 (size 9 -1 :right)
-;;                 " "
-;;                 (mode 16 16 :left :elide)
-;;                 " " filename-and-process)
-;;           (mark " " (name 16 -1) " " filename))))
-
-;; (use-package ibuffer-vc
-;;   :ensure t
-;;   :defer t
-;;   :init (add-hook 'ibuffer-hook
-;;                   (lambda ()
-;;                     (ibuffer-vc-set-filter-groups-by-vc-root)
-;;                     (unless (eq ibuffer-sorting-mode 'alphabetic)
-;;                       (ibuffer-do-sort-by-alphabetic)))))
-
 ;; Save minibuffer history
 (use-package savehist
   :init (savehist-mode t)
@@ -808,18 +774,6 @@ This is useful when followed by an immediate kill."
 (setq projectile-switch-project-action 'helm-projectile)
 (setq projectile-enable-caching t)
 
-(use-package helm-swoop
-  :bind
-  (("M-i" . helm-swoop)
-   ("M-I" . helm-swoop-back-to-last-point)
-   ("C-c M-i" . helm-multi-swoop)
-   ("C-x M-i" . helm-multi-swoop-all))
-  :config
-  (progn
-    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
-  )
-
 (require 'helm-ag)
 (global-set-key (kbd "C-c g") 'helm-ag)
 
@@ -866,53 +820,3 @@ This is useful when followed by an immediate kill."
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))
-
-
-(use-package elfeed-org
-  :ensure t
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "/home/anchu/ownCloud/news-feed.org")))
-
-;;shortcut functions
-(defun anchu/elfeed-show-all ()
-  (interactive)
-  (bookmark-maybe-load-default-file)
-  (bookmark-jump "elfeed-all"))
-(defun anchu/elfeed-show-emacs ()
-  (interactive)
-  (bookmark-maybe-load-default-file)
-  (bookmark-jump "elfeed-emacs"))
-(defun anchu/elfeed-show-r ()
-  (interactive)
-  (bookmark-maybe-load-default-file)
-  (bookmark-jump "elfeed-r"))
-(defun ancchu/elfeed-show-daily ()
-  (interactive)
-  (bookmark-maybe-load-default-file)
-  (bookmark-jump "elfeed-daily"))
-
-;;functions to support syncing .elfeed between machines
-;;makes sure elfeed reads index from disk before launching
-(defun anchu/elfeed-load-db-and-open ()
-  "Wrapper to load the elfeed db from disk before opening"
-  (interactive)
-  (elfeed-db-load)
-  (elfeed)
-  (elfeed-search-update--force))
-
-;;write to disk when quiting
-(defun anchu/elfeed-save-db-and-bury ()
-  "Wrapper to save the elfeed db to disk before burying buffer"
-  (interactive)
-  (elfeed-db-save)
-  (quit-window))
-
-(use-package elfeed
-  :ensure t
-  :bind (:map elfeed-search-mode-map
-              ("A" . anchu/elfeed-show-all)
-              ("E" . anchu/elfeed-show-emacs)
-              ("D" . anchu/elfeed-show-daily)
-              ("R" . anchu/elfeed-show-daily)
-              ("q" . anchu/elfeed-save-db-and-bury)))
