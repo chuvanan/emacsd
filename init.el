@@ -33,7 +33,6 @@
 (menu-bar-mode -1)
 (global-hl-line-mode +1)
 
-
 ;; visual line
 (setq line-move-visual t)
 (setq scroll-step 1
@@ -121,6 +120,7 @@
 (global-set-key (kbd "<f6>") 'calculator)
 (global-set-key (kbd "M-]") 'forward-paragraph)
 (global-set-key (kbd "M-[") 'backward-paragraph)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 ;; hippie expand is dabbrev expand on steroids
 (setq hippie-expand-try-functions-list '(try-expand-dabbrev
@@ -197,9 +197,9 @@
                 savehist-autosave-interval 180))
 
 ;; add stripes to a buffer
-(use-package stripe-buffer
-  :ensure t
-  :init (add-hook 'dired-mode-hook #'stripe-buffer-mode))
+;; (use-package stripe-buffer
+;;   :ensure t
+;;   :init (add-hook 'dired-mode-hook #'stripe-buffer-mode))
 
 (use-package rainbow-delimiters
   :ensure t)
@@ -218,18 +218,6 @@
   :ensure t
   :config
   (global-hungry-delete-mode))
-
-;; beacon
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1)
-  (setq beacon-push-mark 35)
-  (setq beacon-color "#666600")
-  (setq beacon-blink-duration 0.2)
-  (setq beacon-size 40)
-  (setq beacon-dont-blink-major-modes
-        (append beacon-dont-blink-major-modes '(inferior-ess-mode))))
 
 ;; silver searcher
 (use-package ag
@@ -256,15 +244,15 @@
   ;; don't muck with special buffers
   (setq uniquify-ignore-buffers-re "^\\*"))
 
-(use-package keyfreq
-  :ensure t
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
+;; (use-package keyfreq
+;;   :ensure t
+;;   :config
+;;   (keyfreq-mode 1)
+;;   (keyfreq-autosave-mode 1))
 
-(use-package imenu-anywhere
-	:ensure t
-	:bind (("C-." . helm-imenu-anywhere)))
+;; (use-package imenu-anywhere
+;; 	:ensure t
+;; 	:bind (("C-." . helm-imenu-anywhere)))
 
 (use-package avy
   :ensure t
@@ -276,19 +264,18 @@
   :config
   (which-key-mode +1))
 
-(use-package undo-tree
-  :ensure t
-  :config
-  (setq undo-tree-history-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq undo-tree-auto-save-history t))
+;; (use-package undo-tree
+;;   :ensure t
+;;   :config
+;;   (setq undo-tree-history-directory-alist
+;;         `((".*" . ,temporary-file-directory)))
+;;   (setq undo-tree-auto-save-history t))
 
 (use-package recentf
   :config
   (setq recentf-max-saved-items 500
         recentf-max-menu-items 15
         recentf-auto-cleanup 'never)
-	;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
   (recentf-mode +1))
 
 (use-package dired
@@ -404,7 +391,6 @@
  '(custom-safe-themes
    (quote
     ("b61c55259c639a54628f91452b060b99c550a1269eb947e372321b806b68f114" "fbcdb6b7890d0ec1708fa21ab08eb0cc16a8b7611bb6517b722eba3891dfc9dd" "1db337246ebc9c083be0d728f8d20913a0f46edc0a00277746ba411c149d7fe5" "5999e12c8070b9090a2a1bbcd02ec28906e150bb2cdce5ace4f965c76cf30476" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "f34b107e8c8443fe22f189816c134a2cc3b1452c8874d2a4b2e7bb5fe681a10b" "84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "e8e744a1b0726814ac3ab86ad5ccdf658b9ff1c5a63c4dc23841007874044d4a" "9b65cf71fd6b27a5362afeff062c6abd1c5d8a7c4d444c942f3da36bf0a151b1" "cdfb22711f64d0e665f40b2607879fcf2607764b2b70d672ddaa26d2da13049f" "232f715279fc131ed4facf6a517b84d23dca145fcc0e09c5e0f90eb534e1680f" "9956eace4d6a1df9bd8c5875406c3dab0b98dd385d3bc99a83aaf730526a6056" "c7f838704d7caa88bc337464867c22af0a502e32154558b0f6c9c3c6e8650122" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "0ae52e74c576120c6863403922ee00340a3bf3051615674c4b937f9c99b24535" "aed73c6d0afcf2232bb25ed2d872c7a1c4f1bda6759f84afc24de6a1aec93da8" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "f245c9f24b609b00441a6a336bcc556fe38a6b24bfc0ca4aedd4fe23d858ba31" "1dfd7a150e80fdb4563f594716d09d849f4c50bcea12825bd8d284c05a87a3e1" "9cb6358979981949d1ae9da907a5d38fb6cde1776e8956a1db150925f2dad6c1" "4d80487632a0a5a72737a7fc690f1f30266668211b17ba836602a8da890c2118" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "3f5701c23d328be03536349b29cb24c5cfa79ea9ef9c46cf89668eda16b88a9c" "12b7ed9b0e990f6d41827c343467d2a6c464094cbcc6d0844df32837b50655f9" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
- '(default-input-method "vietnamese-telex")
  '(ess-R-font-lock-keywords
    (quote
     ((ess-R-fl-keyword:modifiers . t)
@@ -419,7 +405,7 @@
      (ess-fl-keyword:=)
      (ess-R-fl-keyword:F&T)
      (ess-R-fl-keyword:%op%))))
- '(inferior-R-font-lock-keywords
+ '(inferior-ess-r-font-lock-keywords
    (quote
     ((ess-S-fl-keyword:prompt . t)
      (ess-R-fl-keyword:messages . t)
@@ -438,7 +424,7 @@
  '(org-agenda-files (quote ("/home/anchu/ownCloud/org-mode/rta-tasks.org")))
  '(package-selected-packages
    (quote
-    (elfeed-web elfeed-org elfeed leuven leuven-theme airline-themes yaml-mode sml-mode ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
+    (htmlize py-autopep8 gnuplot-mode elpy material-theme elfeed-web elfeed-org elfeed leuven leuven-theme airline-themes yaml-mode sml-mode ample-zen-theme tangotango-theme helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme seoul256-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline base16-theme tango-plus-theme greymatters-theme flatui-theme meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit solarized-theme expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -452,6 +438,7 @@
  '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 95 :width normal)))))
 
 (setq show-paren-delay 0)
+
 ;; redefinde kill line and kill region
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
@@ -565,20 +552,20 @@ This is useful when followed by an immediate kill."
 (define-key isearch-mode-map [(control return)] 'isearch-exit-other-end)
 
 ;; Search back/forth for the symbol at point
-(defun isearch-yank-symbol ()
-  "*Put symbol at current point into search string."
-  (interactive)
-  (let ((sym (symbol-at-point)))
-    (if sym
-        (progn
-          (setq isearch-regexp t
-                isearch-string (concat "\\_<" (regexp-quote (symbol-name sym)) "\\_>")
-                isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
-                isearch-yank-flag t))
-      (ding)))
-  (isearch-search-and-update))
+;; (defun isearch-yank-symbol ()
+;;   "*Put symbol at current point into search string."
+;;   (interactive)
+;;   (let ((sym (symbol-at-point)))
+;;     (if sym
+;;         (progn
+;;           (setq isearch-regexp t
+;;                 isearch-string (concat "\\_<" (regexp-quote (symbol-name sym)) "\\_>")
+;;                 isearch-message (mapconcat 'isearch-text-char-description isearch-string "")
+;;                 isearch-yank-flag t))
+;;       (ding)))
+;;   (isearch-search-and-update))
 
-(define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
+;; (define-key isearch-mode-map "\C-\M-w" 'isearch-yank-symbol)
 
 
 ;;;; Tidy up the mode-line.  I don't need to see everything in there.
@@ -629,6 +616,15 @@ This is useful when followed by an immediate kill."
 (setq org-confirm-babel-evaluate nil)
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
 (add-hook 'org-mode-hook 'org-display-inline-images)
+(setq org-html-validation-link nil)
+(setq org-src-fontify-natively t)
+(setq org-html-htmlize-output-type 'css)
+
+(setq org-latex-listings 'minted
+      org-latex-packages-alist '(("" "minted"))
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 (defun anchu-set-cursor ()
   (cond
@@ -658,35 +654,35 @@ This is useful when followed by an immediate kill."
   (find-file-other-window user-init-file))
 (global-set-key (kbd "C-c I") 'find-user-init-file)
 
-(defun rename-file-and-buffer ()
-  "Rename the current buffer and file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (message "Buffer is not visiting a file!")
-      (let ((new-name (read-file-name "New name: " filename)))
-        (cond
-         ((vc-backend filename) (vc-rename-file filename new-name))
-         (t
-          (rename-file filename new-name t)
-          (set-visited-file-name new-name t t)))))))
+;; (defun rename-file-and-buffer ()
+;;   "Rename the current buffer and file it is visiting."
+;;   (interactive)
+;;   (let ((filename (buffer-file-name)))
+;;     (if (not (and filename (file-exists-p filename)))
+;;         (message "Buffer is not visiting a file!")
+;;       (let ((new-name (read-file-name "New name: " filename)))
+;;         (cond
+;;          ((vc-backend filename) (vc-rename-file filename new-name))
+;;          (t
+;;           (rename-file filename new-name t)
+;;           (set-visited-file-name new-name t t)))))))
 
-(global-set-key (kbd "C-c r")  'rename-file-and-buffer)
+;; (global-set-key (kbd "C-c r")  'rename-file-and-buffer)
 
 ;; remove vertical line between windows
 (set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
 
-(defun check-expansion ()
-  (save-excursion
-    (if (looking-at "\\_>") t
-      (backward-char 1)
-      (if (looking-at "\\.") t
-        (backward-char 1)
-        (if (looking-at "->") t nil)))))
+;; (defun check-expansion ()
+;;   (save-excursion
+;;     (if (looking-at "\\_>") t
+;;       (backward-char 1)
+;;       (if (looking-at "\\.") t
+;;         (backward-char 1)
+;;         (if (looking-at "->") t nil)))))
 
-(defun do-yas-expand ()
-  (let ((yas-fallback-behavior 'return-nil))
-    (yas-expand)))
+;; (defun do-yas-expand ()
+;;   (let ((yas-fallback-behavior 'return-nil))
+;;     (yas-expand)))
 
 (defun tab-indent-or-complete ()
   (interactive)
@@ -700,7 +696,6 @@ This is useful when followed by an immediate kill."
 
 (define-key prog-mode-map [tab] 'tab-indent-or-complete)
 (define-key prog-mode-map (kbd "TAB") 'tab-indent-or-complete)
-
 
 ;; helm setup
 (require 'helm)
@@ -723,7 +718,8 @@ This is useful when followed by an immediate kill."
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
       helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
       helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t)
+      helm-ff-file-name-history-use-recentf t
+      helm-ff-auto-update-initial-value t)
 
 (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
       helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
@@ -759,9 +755,9 @@ This is useful when followed by an immediate kill."
 (global-set-key (kbd "C-c h g") 'helm-google-suggest)
 (global-set-key (kbd "C-x r b") 'helm-filtered-bookmarks)
 (global-set-key (kbd "C-c h SPC") 'helm-all-mark-rings)
-(require 'helm-descbinds)
-(helm-descbinds-mode)
-(global-set-key (kbd "C-h b")    'helm-descbinds)
+;; (require 'helm-descbinds)
+;; (helm-descbinds-mode)
+;; (global-set-key (kbd "C-h b")    'helm-descbinds)
 (helm-mode 1)
 
 ;; projectile mode
@@ -806,17 +802,46 @@ This is useful when followed by an immediate kill."
 
 (global-set-key (kbd "<f7>") 'ispell-word)
 
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+;; (require 'yaml-mode)
+;; (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
+;; (setq sml-prog-name "/usr/bin/sml")
+;; (add-to-list 'auto-mode-alist '("\\.\\(sml\\|sig\\)\\'" . sml-mode))
+;; (defun my-sml-mode-hook () "Local defaults for SML mode"
+;;        (setq sml-indent-level 2)        ; conserve on horizontal space
+;;        (setq words-include-escape t)    ; \ loses word break status
+;;        (setq indent-tabs-mode nil))     ; never ever indent with tabs
+;; (add-hook 'sml-mode-hook 'my-sml-mode-hook)
 
-(setq sml-prog-name "/usr/bin/sml")
-(add-to-list 'auto-mode-alist '("\\.\\(sml\\|sig\\)\\'" . sml-mode))
-(defun my-sml-mode-hook () "Local defaults for SML mode"
-       (setq sml-indent-level 2)        ; conserve on horizontal space
-       (setq words-include-escape t)    ; \ loses word break status
-       (setq indent-tabs-mode nil))     ; never ever indent with tabs
-(add-hook 'sml-mode-hook 'my-sml-mode-hook)
+(require 'gnuplot-mode)
 
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
+(require 'adoc-mode)
+;; (add-hook 'adoc-mode-hook (lambda() (buffer-face-mode t)))
+(add-to-list 'auto-mode-alist (cons "\\.txt\\'" 'adoc-mode))
+
+;; -----------------------------------------------------------------------------
+;; for python
+
+(package-initialize)
+(elpy-enable)
+(elpy-use-ipython)
+
+;; enable autopep8 formatting on save
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+(setq python-shell-interpreter "/usr/bin/python3.5")
+;; use IPython
+(setq-default py-shell-name "ipython")
+(setq-default py-which-bufname "IPython")
+;; use the wx backend, for both mayavi and matplotlib
+(setq py-python-command-args
+      '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
+(setq py-force-py-shell-name-p t)
+
+;; switch to the interpreter after executing code
+(setq py-shell-switch-buffers-on-execute-p t)
+(setq py-switch-buffers-on-execute-p t)
+
+;; try to automagically figure out indentation
+(setq py-smart-indentation t)
