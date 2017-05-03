@@ -626,6 +626,9 @@ This is useful when followed by an immediate kill."
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
+(add-to-list 'org-structure-template-alist
+             '("s" "#+NAME: ?\n#+BEGIN_SRC \n\n#+END_SRC"))
+
 (defun anchu-set-cursor ()
   (cond
    (buffer-read-only
