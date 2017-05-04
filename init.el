@@ -619,6 +619,10 @@ This is useful when followed by an immediate kill."
 (setq org-html-validation-link nil)
 (setq org-src-fontify-natively t)
 (setq org-html-htmlize-output-type 'css)
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-export-with-timestamps nil)
+(setq org-export-with-toc nil)
 
 (setq org-latex-listings 'minted
       org-latex-packages-alist '(("" "minted"))
@@ -798,7 +802,7 @@ This is useful when followed by an immediate kill."
 (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "CANCELED" "DONE")))
-(setq org-agenda-files '("~/ownCloud/org-mode/"))
+(setq org-agenda-files '("~/Dropbox/org-mode/"))
 (setq org-return-follows-link t)
 (setq org-startup-with-inline-images t)
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
