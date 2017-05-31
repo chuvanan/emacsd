@@ -64,7 +64,7 @@
 
 ;; disable startup screen
 (setq inhibit-startup-screen t)
-(setq initial-major-mode 'org-mode)
+(setq initial-major-mode 'R-mode)
 (setq initial-scratch-message nil)
 (fset 'display-startup-echo-area-message #'ignore)
 (setq use-dialog-box nil)
@@ -293,6 +293,11 @@
   :config
   (load-theme 'sanityinc-tomorrow-eighties t))
 
+;; (use-package zenburn-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'zenburn t))
+
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)))
@@ -326,8 +331,11 @@
 (use-package aggressive-indent
   :ensure t
   :config
-	(add-hook 'ess-mode-hook #'aggressive-indent-mode)
+  (add-hook 'ess-mode-hook #'aggressive-indent-mode)
   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+
+;; turn off auto revert messages
+(setq auto-revert-verbose nil)
 
 (require 'ess-site)
 (require 'ess-rutils)
@@ -424,7 +432,7 @@
  '(org-agenda-files (quote ("/home/anchu/ownCloud/org-mode/rta-tasks.org")))
  '(package-selected-packages
    (quote
-    (htmlize py-autopep8 gnuplot-mode elpy leuven yaml-mode sml-mode helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window evil-leader keyfreq apropospriate-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex evil window-numbering company easy-kill use-package magit expand-region markdown-mode auto-complete smartparens org)))
+    (htmlize py-autopep8 gnuplot-mode elpy leuven yaml-mode sml-mode helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window keyfreq apropospriate-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex window-numbering company easy-kill use-package magit expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -822,9 +830,9 @@ This is useful when followed by an immediate kill."
 
 (require 'gnuplot-mode)
 
-(require 'adoc-mode)
+;; (require 'adoc-mode)
 ;; (add-hook 'adoc-mode-hook (lambda() (buffer-face-mode t)))
-(add-to-list 'auto-mode-alist (cons "\\.txt\\'" 'adoc-mode))
+;; (add-to-list 'auto-mode-alist (cons "\\.txt\\'" 'adoc-mode))
 
 ;; -----------------------------------------------------------------------------
 ;; for python
