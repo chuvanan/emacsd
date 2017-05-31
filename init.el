@@ -337,6 +337,9 @@
 ;; turn off auto revert messages
 (setq auto-revert-verbose nil)
 
+;; auto refresh dired when file changes
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+
 (require 'ess-site)
 (require 'ess-rutils)
 (setq ess-ask-for-ess-directory nil)
