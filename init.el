@@ -419,6 +419,13 @@
 (add-hook 'ess-mode-hook #'electric-operator-mode)
 (setq electric-operator-R-named-argument-style 'spaced)
 
+;; custom := operator (data.table)
+(electric-operator-add-rules-for-mode 'ess-mode
+                                      (cons ":=" " := ")
+                                      (cons "%" nil)
+                                      (cons "%in%" " %in% ")
+                                      (cons "%%" " %% "))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -690,7 +697,7 @@ This is useful when followed by an immediate kill."
 (defadvice save-buffers-kill-emacs
     (around no-query-kill-emacs activate)
   "Prevent \"Active processes exist\" query on exit."
-  (flet ((process-list ())) ad-do-it))
+  (cl-flet ((process-list ())) ad-do-it))
 
 
 (defun find-user-init-file ()
@@ -717,17 +724,17 @@ This is useful when followed by an immediate kill."
 ;; remove vertical line between windows
 (set-face-attribute 'vertical-border nil :foreground (face-attribute 'fringe :background))
 
-;; (defun check-expansion ()
-;;   (save-excursion
-;;     (if (looking-at "\\_>") t
-;;       (backward-char 1)
-;;       (if (looking-at "\\.") t
-;;         (backward-char 1)
-;;         (if (looking-at "->") t nil)))))
+(defun check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+        (backward-char 1)
+        (if (looking-at "->") t nil)))))
 
-;; (defun do-yas-expand ()
-;;   (let ((yas-fallback-behavior 'return-nil))
-;;     (yas-expand)))
+(defun do-yas-expand ()
+  (let ((yas-maybe-expand 'return-nil))
+    (yas-expand)))
 
 (defun tab-indent-or-complete ()
   (interactive)
@@ -809,7 +816,7 @@ This is useful when followed by an immediate kill."
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode +1))
+  (projectile-mode +1))
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 (setq projectile-switch-project-action 'helm-projectile)
