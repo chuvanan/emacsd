@@ -388,7 +388,7 @@
 (ess-toggle-S-assign nil)
 (ess-toggle-S-assign nil)
 (ess-toggle-underscore nil)
-
+(ess-disable-smart-S-assign nil)
 ;; active eldoc on ess-mode only
 (setq ess-use-eldoc 'script-only)
 
@@ -424,7 +424,10 @@
                                       (cons ":=" " := ")
                                       (cons "%" nil)
                                       (cons "%in%" " %in% ")
-                                      (cons "%%" " %% "))
+                                      (cons "%%" " %% ")
+                                      (cons "!=" " != ")
+                                      (cons "<=" " <= ")
+                                      (cons ">=" " >= "))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
