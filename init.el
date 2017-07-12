@@ -49,6 +49,7 @@
 (setq-default default-tab-width 2)
 (setq tab-always-indent 'complete)
 (setq-default indent-tabs-mode nil)
+(setq history-delete-duplicates t)
 
 ;; require a newline at the end of files
 (setq require-final-newline t)
@@ -141,6 +142,9 @@
 ;; set join line instead of fill paragraph
 (global-set-key (kbd "M-q") 'delete-indentation)
 
+;; fill paragraph
+(global-set-key (kbd "M-p") 'fill-paragraph)
+
 ;; rebinding undo command
 (global-set-key (kbd "C-z") 'undo)
 
@@ -173,6 +177,12 @@
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this))
+
+;; paredit-everywhere
+(use-package paredit-everywhere
+  :ensure t
+  :config
+  (add-hook 'ess-mode-hook #'paredit-everywhere-mode))
 
 ;; yas-snipppet
 (use-package yasnippet
@@ -303,9 +313,24 @@
   :bind (("C-x g" . magit-status)))
 
 (use-package smartparens
+  :init
+  (smartparens-global-mode t)
+  :diminish smartparens-mode
   :ensure t
   :config
-  (smartparens-global-mode t))
+  (require 'smartparens-config)
+  (define-key smartparens-mode-map (kbd "C-c s a") 'sp-beginning-of-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s e") 'sp-end-of-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s s") 'sp-forward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s r") 'sp-forward-barf-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s S") 'sp-backward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s R") 'sp-backward-barf-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s [") 'sp-select-previous-thing)
+  (define-key smartparens-mode-map (kbd "C-c s ]") 'sp-select-next-thing)
+  (define-key smartparens-mode-map (kbd "C-c s C-i") 'sp-splice-sexp)
+  (define-key smartparens-mode-map (kbd "C-c s <delete>") 'sp-splice-sexp-killing-forward)
+  (define-key smartparens-mode-map (kbd "C-c s <backspace>") 'sp-splice-sexp-killing-backward)
+  (define-key smartparens-mode-map (kbd "C-c s C-<backspace>") 'sp-splice-sexp-killing-around))
 
 (use-package company
   :ensure t
@@ -344,7 +369,7 @@
 (require 'ess-rutils)
 (setq ess-ask-for-ess-directory nil)
 (setq ess-eval-visibly nil)
-(setq ess-default-style 'RStudio)
+(setq ess-default-style 'RRR)
 
 ;; company backend
 (setq-local company-backends
@@ -395,7 +420,7 @@
 ;; ESS
 (add-hook 'ess-mode-hook
           (lambda ()
-            (ess-set-style 'C++ 'quiet)
+            (ess-set-style 'RRR 'quiet)
             ;; Because
             ;;                                 DEF GNU BSD K&R C++
             ;; ess-indent-level                  2   2   8   5   4
@@ -419,6 +444,7 @@
 (add-hook 'ess-mode-hook #'electric-operator-mode)
 (setq electric-operator-R-named-argument-style 'spaced)
 
+
 ;; custom := operator (data.table)
 (electric-operator-add-rules-for-mode 'ess-mode
                                       (cons ":=" " := ")
@@ -427,7 +453,8 @@
                                       (cons "%%" " %% ")
                                       (cons "!=" " != ")
                                       (cons "<=" " <= ")
-                                      (cons ">=" " >= "))
+                                      (cons ">=" " >= ")
+                                      (cons ";" "; "))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -472,7 +499,7 @@
  '(org-agenda-files (quote ("/home/anchu/ownCloud/org-mode/rta-tasks.org")))
  '(package-selected-packages
    (quote
-    (electric-operator htmlize py-autopep8 gnuplot-mode elpy leuven yaml-mode sml-mode helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window keyfreq apropospriate-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex window-numbering company easy-kill use-package magit expand-region markdown-mode auto-complete smartparens org)))
+    (paredit-everywhere electric-operator htmlize py-autopep8 gnuplot-mode elpy leuven yaml-mode sml-mode helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window keyfreq apropospriate-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex window-numbering company easy-kill use-package magit expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -488,11 +515,11 @@
 (setq show-paren-delay 0)
 
 ;; redefinde kill line and kill region
-(defadvice kill-ring-save (before slick-copy activate compile) "When called
-  interactively with no active region, copy a single line instead."
-           (interactive (if mark-active (list (region-beginning) (region-end)) (message
-                                                                                "Copied line") (list (line-beginning-position) (line-beginning-position
-                                                                                                                                2)))))
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive (if mark-active (list (region-beginning) (region-end))
+                 (message "Copied line")
+                 (list (line-beginning-position) (line-beginning-position 2)))))
 
 (defadvice kill-region (before slick-cut activate compile)
   "When called interactively with no active region, kill a single line instead."
@@ -752,68 +779,110 @@ This is useful when followed by an immediate kill."
 (define-key prog-mode-map [tab] 'tab-indent-or-complete)
 (define-key prog-mode-map (kbd "TAB") 'tab-indent-or-complete)
 
-;; helm setup
-(require 'helm)
-(require 'helm-config)
+;; -----------------------------------------------------------------------------
+;; helm - interactive completion
+;; -----------------------------------------------------------------------------
 
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(use-package helm-fuzzier
+  :ensure t
+  :disabled t
+  :init
+  (helm-fuzzier-mode))
+
+(use-package helm
+  :diminish helm-mode
+  :init
+  (progn
+    (require 'helm-config)
+    (setq helm-candidate-number-limit 100)
+    ;; From https://gist.github.com/antifuchs/9238468
+    (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+          helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
+          helm-yas-display-key-on-candidate t
+          helm-quick-update t
+          helm-M-x-requires-pattern nil
+          helm-ff-skip-boring-files t
+          helm-autoresize-mode 1
+          helm-split-window-in-side-p t
+          helm-move-to-line-cycle-in-source t
+          helm-ff-search-library-in-sexp t
+          helm-scroll-amount 8
+          helm-ff-file-compressed-list t
+          helm-ff-auto-update-initial-value t
+          helm-apropos-fuzzy-match t
+          helm-locate-fuzzy-match t
+          helm-semantic-fuzzy-match t
+          helm-imenu-fuzzy-match t
+          helm-lisp-fuzzy-completion t
+          helm-buffers-fuzzy-matching t
+          helm-recentf-fuzzy-match t
+          helm-M-x-fuzzy-match t)
+    (helm-mode))
+  :config
+  (progn
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+    (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+    (when (executable-find "curl")
+      (setq helm-net-prefer-curl t)))
+  :bind (("C-c h" . helm-command-prefix) ; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+         ("C-x b" . helm-mini)
+         ("C-h a" . helm-apropos)
+         ("C-x C-b" . helm-buffers-list)
+         ("C-x b" . helm-buffers-list)
+         ("M-y" . helm-show-kill-ring)
+         ("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-h i" . helm-info-emacs)
+         ("C-x C-r" . helm-recentf)
+         ("M-o" . helm-occur)
+         ("C-c h x" . helm-register)
+         ("C-c h g" . helm-google-suggest)
+         ("C-c r b" . helm-filtered-bookmarks)
+         ("C-x c SPC" . helm-all-mark-rings)))
+(ido-mode -1) ;; Turn off ido mode in case I enabled it accidentally
 (global-unset-key (kbd "C-x c"))
 
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+(use-package helm-ag
+  :bind
+  (("C-c g" . helm-ag)))
 
-(when (executable-find "curl")
-  (setq helm-net-prefer-curl t))
+(use-package helm-swoop
+  :init
+  (progn
+    (setq helm-swoop-split-direction 'split-window-vertically)
+    (setq helm-swoop-speed-or-color nil)
+    (setq helm-swoop-move-to-line-cycle t)
+    (setq helm-swoop-split-with-multiple-windows t)
+    (setq helm-multi-swoop-edit-save t)
+    (setq helm-swoop-use-fuzzy-match t)
+    (setq helm-swoop-use-line-number-face t))
+  :bind
+  (;; ("C-s" . helm-swoop)
+   ("M-s s" . helm-swoop)
+   ("C-c M-i" . helm-multi-swoop)
+   ("C-x M-i" . helm-multi-swoop-all))
+  :config
+  (progn
+    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
 
-(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-ff-auto-update-initial-value t)
+(use-package helm-descbinds
+  :defer t
+  :bind (("C-h b" . helm-descbinds)
+         ("C-h w" . helm-descbinds)))
 
-(setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-      helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
-      helm-yas-display-key-on-candidate t
-      helm-quick-update t
-      helm-M-x-requires-pattern nil
-      helm-ff-skip-boring-files t)
+(use-package helm-buffers
+  :config
+  (add-to-list 'helm-boring-buffer-regexp-list "^TAGS$")
+  (add-to-list 'helm-boring-buffer-regexp-list "vc-diff")
+  (add-to-list 'helm-boring-buffer-regexp-list "Message")
+  (add-to-list 'helm-boring-buffer-regexp-list "ESS")
+  (add-to-list 'helm-boring-buffer-regexp-list "log-edit-files")
+  (add-to-list 'helm-boring-buffer-regexp-list "vc")
+  (add-to-list 'helm-boring-buffer-regexp-list "Compile-Log"))
 
-(helm-autoresize-mode t)
-
-(global-set-key (kbd "C-h a")    'helm-apropos)
-(global-set-key (kbd "C-h i")    'helm-info-emacs)
-(global-set-key (kbd "C-x C-r") 'helm-recentf)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(setq helm-M-x-fuzzy-match t)
-
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-
-(global-set-key (kbd "C-x b") 'helm-mini)
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match    t)
-(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-
-(setq helm-semantic-fuzzy-match t
-      helm-imenu-fuzzy-match    t)
-(setq helm-lisp-fuzzy-completion t)
-(global-set-key (kbd "C-c h o") 'helm-occur)
-(global-set-key (kbd "M-o") 'helm-occur)
-(setq helm-locate-fuzzy-match t)
-(setq helm-apropos-fuzzy-match t)
-(global-set-key (kbd "C-c h x") 'helm-register)
-(global-set-key (kbd "C-c h g") 'helm-google-suggest)
-(global-set-key (kbd "C-x r b") 'helm-filtered-bookmarks)
-(global-set-key (kbd "C-c h SPC") 'helm-all-mark-rings)
-;; (require 'helm-descbinds)
-;; (helm-descbinds-mode)
-;; (global-set-key (kbd "C-h b")    'helm-descbinds)
-(helm-mode 1)
+;; -----------------------------------------------------------------------------
 
 ;; projectile mode
 (use-package projectile
@@ -824,24 +893,6 @@ This is useful when followed by an immediate kill."
 (helm-projectile-on)
 (setq projectile-switch-project-action 'helm-projectile)
 (setq projectile-enable-caching t)
-
-(require 'helm-ag)
-(global-set-key (kbd "C-c g") 'helm-ag)
-
-;; Save buffer when helm-multi-swoop-edit complete
-(setq helm-multi-swoop-edit-save t)
-
-;; If this value is t, split window inside the current window
-(setq helm-swoop-split-with-multiple-windows t)
-
-;; Split direction. 'split-window-vertically or 'split-window-horizontally
-(setq helm-swoop-split-direction 'split-window-vertically)
-
-;; If nil, you can slightly boost invoke speed in exchange for text color
-(setq helm-swoop-speed-or-color nil)
-
-;; Go to the opposite side of line from the end or beginning of line
-(setq helm-swoop-move-to-line-cycle t)
 
 ;; set up org-mode
 (global-set-key "\C-cl" 'org-store-link)
@@ -885,7 +936,8 @@ This is useful when followed by an immediate kill."
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-(setq python-shell-interpreter "/usr/bin/python3.5")
+;; (setq python-shell-interpreter "/usr/bin/python3.5")
+(setq python-shell-interpreter "/usr/local/bin/ipython3")
 ;; use IPython
 (setq-default py-shell-name "ipython")
 (setq-default py-which-bufname "IPython")
@@ -916,3 +968,43 @@ This is useful when followed by an immediate kill."
 (setq company-backends (delete 'company-semantic company-backends))
 (define-key c-mode-map  [(tab)] 'company-complete)
 (define-key c++-mode-map  [(tab)] 'company-complete)
+
+
+;; -----------------------------------------------------------------------------
+
+(defun anchu/insert-minor-section ()
+  "Insert minor section heading for a snippet of R codes."
+  (interactive)
+  (insert "## -----------------------------------------------------------------------------\n")
+  (insert "## "))
+
+(defun anchu/insert-r-code-chunk ()
+  "Insert R Markdown code chunk."
+  (interactive)
+  (insert "```{r, include=FALSE}\n")
+  (insert "\n")
+  (save-excursion
+    (insert "\n")
+    (insert "\n")
+    (insert "```\n")))
+
+(defun anchu/insert-major-section ()
+  "Insert major section heading for a block of R codes."
+  (interactive)
+  (insert "## -----------------------------------------------------------------------------\n")
+  (insert "## ")
+  (save-excursion
+    (insert "\n")
+    (insert "## -----------------------------------------------------------------------------\n")))
+
+(defun anchu/insert-resource-header ()
+  "Insert yaml-like header for R script resources."
+  (interactive)
+  (insert "## -----------------------------------------------------------------------------\n")
+  (insert "## code: ")
+  (save-excursion
+    (insert "\n")
+    (insert "## description: \n")
+    (insert "## author: \n")
+    (insert (concat "## date: " (current-time-string) "\n"))
+    (insert "## -----------------------------------------------------------------------------\n")))
