@@ -936,8 +936,8 @@ This is useful when followed by an immediate kill."
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-;; (setq python-shell-interpreter "/usr/bin/python3.5")
-(setq python-shell-interpreter "/usr/local/bin/ipython3")
+(setq python-shell-interpreter "/usr/bin/python3.5")
+;; (setq python-shell-interpreter "/usr/local/bin/ipython3")
 ;; use IPython
 (setq-default py-shell-name "ipython")
 (setq-default py-which-bufname "IPython")
