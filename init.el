@@ -46,7 +46,7 @@
 
 ;; set fill column to 80 characters
 (setq-default fill-column 80)
-(setq-default default-tab-width 2)
+(setq-default default-tab-width 4)
 (setq tab-always-indent 'complete)
 (setq-default indent-tabs-mode nil)
 (setq history-delete-duplicates t)
@@ -179,10 +179,10 @@
   (global-set-key (kbd "C-c C->") 'mc/mark-all-like-this))
 
 ;; paredit-everywhere
-(use-package paredit-everywhere
-  :ensure t
-  :config
-  (add-hook 'ess-mode-hook #'paredit-everywhere-mode))
+;; (use-package paredit-everywhere
+;;   :ensure t
+;;   :config
+;;   (add-hook 'ess-mode-hook #'paredit-everywhere-mode))
 
 ;; yas-snipppet
 (use-package yasnippet
@@ -442,8 +442,8 @@
 
 (require 'electric-operator)
 (add-hook 'ess-mode-hook #'electric-operator-mode)
+(add-hook 'python-mode-hook #'electric-operator-mode)
 (setq electric-operator-R-named-argument-style 'spaced)
-
 
 ;; custom := operator (data.table)
 (electric-operator-add-rules-for-mode 'ess-mode
@@ -499,7 +499,7 @@
  '(org-agenda-files (quote ("/home/anchu/ownCloud/org-mode/rta-tasks.org")))
  '(package-selected-packages
    (quote
-    (paredit-everywhere electric-operator htmlize py-autopep8 gnuplot-mode elpy leuven yaml-mode sml-mode helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window keyfreq apropospriate-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex window-numbering company easy-kill use-package magit expand-region markdown-mode auto-complete smartparens org)))
+    (neotree swiper-helm dumb-jump paredit-everywhere electric-operator htmlize py-autopep8 gnuplot-mode elpy leuven yaml-mode sml-mode helm-swoop helm-ag helm-projectile color-theme-sanityinc-tomorrow flycheck goto-last-change polymode multiple-cursors stripe-buffer helm-descbinds ibuffer-vc ido-vertical-mode smart-mode-line-powerline smart-mode-line-powerline-theme rainbow-delimiters tldr anzu hungry-delete swiper r-autoyas beacon ag ido-ubiquitous ace-window keyfreq apropospriate-theme icicles visible-mark company-jedi avy imenu-anywhere aggressive-indent zenburn-theme projectile powerline meaculpa-theme smart-mode-line csv-mode helm-R helm which-key smex window-numbering company easy-kill use-package magit expand-region markdown-mode auto-complete smartparens org)))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -708,7 +708,7 @@ This is useful when followed by an immediate kill."
 (add-to-list 'org-structure-template-alist
              '("s" "#+NAME: ?\n#+BEGIN_SRC \n\n#+END_SRC"))
 
-(defun anchu-set-cursor ()
+(defun anchu/set-cursor ()
   (cond
    (buffer-read-only
     (setq cursor-type 'box)
@@ -720,7 +720,7 @@ This is useful when followed by an immediate kill."
   (when overwrite-mode
     (set-cursor-color "red")))
 
-(add-hook 'post-command-hook 'anchu-set-cursor)
+(add-hook 'post-command-hook 'anchu/set-cursor)
 
 
 ;; kill as exit
@@ -882,6 +882,8 @@ This is useful when followed by an immediate kill."
   (add-to-list 'helm-boring-buffer-regexp-list "vc")
   (add-to-list 'helm-boring-buffer-regexp-list "Compile-Log"))
 
+(helm-autoresize-mode 1)
+
 ;; -----------------------------------------------------------------------------
 
 ;; projectile mode
@@ -939,8 +941,8 @@ This is useful when followed by an immediate kill."
 (setq python-shell-interpreter "/usr/bin/python3.5")
 ;; (setq python-shell-interpreter "/usr/local/bin/ipython3")
 ;; use IPython
-(setq-default py-shell-name "ipython")
-(setq-default py-which-bufname "IPython")
+;; (setq-default py-shell-name "ipython")
+;; (setq-default py-which-bufname "IPython")
 ;; use the wx backend, for both mayavi and matplotlib
 (setq py-python-command-args
       '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
@@ -978,6 +980,8 @@ This is useful when followed by an immediate kill."
   (insert "## -----------------------------------------------------------------------------\n")
   (insert "## "))
 
+(global-set-key (kbd "C-c C-a n") 'anchu/insert-minor-section)
+
 (defun anchu/insert-r-code-chunk ()
   "Insert R Markdown code chunk."
   (interactive)
@@ -988,6 +992,8 @@ This is useful when followed by an immediate kill."
     (insert "\n")
     (insert "```\n")))
 
+(global-set-key (kbd "C-c C-a c") 'anchu/insert-r-code-chunk)
+
 (defun anchu/insert-major-section ()
   "Insert major section heading for a block of R codes."
   (interactive)
@@ -996,6 +1002,8 @@ This is useful when followed by an immediate kill."
   (save-excursion
     (insert "\n")
     (insert "## -----------------------------------------------------------------------------\n")))
+
+(global-set-key (kbd "C-c C-a m") 'anchu/insert-major-section)
 
 (defun anchu/insert-resource-header ()
   "Insert yaml-like header for R script resources."
@@ -1008,3 +1016,125 @@ This is useful when followed by an immediate kill."
     (insert "## author: \n")
     (insert (concat "## date: " (current-time-string) "\n"))
     (insert "## -----------------------------------------------------------------------------\n")))
+
+(global-set-key (kbd "C-c C-a r") 'anchu/insert-resource-header)
+
+(defun anchu/insert-yalm-header ()
+  "Insert Rmd header."
+  (interactive)
+  (insert "---\n")
+  (insert "title: ")
+  (save-excursion
+    (newline)
+    (insert "author: \n")
+    (insert "date: \"`r format(Sys.time(), '%d-%m-%Y %H:%M:%S')`\"\n")
+    (insert "runtime: shiny\n")
+    (insert "output:\n")
+    (indent-to-column 4)
+    (insert "html_document:\n")
+    (indent-to-column 8)
+    (insert "theme: flatly\n")
+    (insert "---")
+    (newline)))
+
+(global-set-key (kbd "C-c C-a y") 'anchu/insert-yalm-header)
+
+(defun anchu/insert-named-comment (cmt)
+  "Make comment header"
+  (interactive "sEnter your comment: ")
+  (let* ((user-cmt (concat "## " cmt " "))
+         (len-user-cmt (length user-cmt))
+         (len-hyphen (- 80 len-user-cmt)))
+    (insert user-cmt (apply 'concat (make-list len-hyphen "-")))
+    (newline)
+    (newline)
+    )
+  )
+
+(global-set-key (kbd "C-c C-a d") 'anchu/insert-named-comment)
+
+(use-package dumb-jump
+  :ensure t
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g j" . dumb-jump-go)
+         ("M-g b" . dumb-jump-back)
+         ("M-g q" . dumb-jump-quick-look)
+         ("M-g x" . dumb-jump-go-prefer-external)
+         ("M-g z" . dumb-jump-go-prefer-external-other-window))
+  :config (setq dumb-jump-selector 'helm))
+
+(require 'neotree)
+(setq neo-smart-open t)
+(global-set-key [f9] 'neotree-toggle)
+
+;; -----------------------------------------------------------------------------
+
+(defun dired-back-to-top ()
+  (interactive)
+  (goto-char (point-min))
+  (dired-next-line 4))
+
+(define-key dired-mode-map
+  (vector 'remap 'beginning-of-buffer) 'dired-back-to-top)
+
+(defun dired-jump-to-bottom ()
+  (interactive)
+  (goto-char (point-max))
+  (dired-next-line -1))
+
+(define-key dired-mode-map
+  (vector 'remap 'end-of-buffer) 'dired-jump-to-bottom)
+
+;; -----------------------------------------------------------------------------
+
+;; Move more quickly
+(global-set-key (kbd "C-S-n")
+                (lambda ()
+                  (interactive)
+                  (ignore-errors (forward-line 5))))
+
+(global-set-key (kbd "C-S-p")
+                (lambda ()
+                  (interactive)
+                  (ignore-errors (forward-line -5))))
+
+(global-set-key (kbd "C-S-f")
+                (lambda ()
+                  (interactive)
+                  (ignore-errors (forward-char 5))))
+
+(global-set-key (kbd "C-S-b")
+                (lambda ()
+                  (interactive)
+                  (ignore-errors (backward-char 5))))
+
+;; -----------------------------------------------------------------------------
+
+(defun move-line-down ()
+  (interactive)
+  (let ((col (current-column)))
+    (save-excursion
+      (forward-line)
+      (transpose-lines 1))
+    (forward-line)
+    (move-to-column col)))
+
+(defun move-line-up ()
+  (interactive)
+  (let ((col (current-column)))
+    (save-excursion
+      (forward-line)
+      (transpose-lines -1))
+    (forward-line -1)
+    (move-to-column col)))
+
+(global-set-key (kbd "C-S-j") 'move-line-down)
+(global-set-key (kbd "C-S-k") 'move-line-up)
+
+(fset 'eval-code-chunk
+      (lambda (&optional arg) "Keyboard macro."
+        (interactive "p")
+        (kmacro-exec-ring-item
+         (quote ([18 96 96 96 13 14 67108896 19 96 96 96 13 16 3 3 134217838 134217742] 0 "%d")) arg)))
+
+(global-set-key (kbd "<f8>") 'eval-code-chunk)
